@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Writes tools/plotter_api.json: every Dynamo-visible PlotterNodes method with its Dynamo
+    mangled signature (the FunctionSignature stored in .dyn files), parameter names, types and
+    defaults. tools/make_numeral_graphs.py builds its nodes from this file, so the sample graphs
+    always match the compiled library.
+
+    Uses the same reference modes as PlotterNodes.csproj, e.g.
+      dotnet run (two dashes)project tools/ApiDump/ApiDump.csproj -c Release -p:DynamoBinDir=[Dynamo bin folder]
+    or with the NuGet package (default). Pass the output path as the first argument.
+  -->
+
+  <PropertyGroup>
+    <DotNet Condition="'$(DotNet)' == ''">net10.0</DotNet>
+    <TargetFramework>$(DotNet)</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <DynamoNuGetVersion Condition="'$(DynamoNuGetVersion)' == ''">4.2.1.5887</DynamoNuGetVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PlotterNodes\PlotterNodes.csproj" />
+  </ItemGroup>
+
+  <!-- Dynamo assemblies must be present at run time for reflection; copy them locally for this tool only. -->
+  <ItemGroup Condition="'$(DynamoBinDir)' != ''">
+    <Reference Include="DynamoServices"><HintPath>$(DynamoBinDir)\DynamoServices.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="ProtoGeometry"><HintPath>$(DynamoBinDir)\ProtoGeometry.dll</HintPath><Private>true</Private></Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(DynamoBinDir)' == ''">
+    <PackageReference Include="DynamoVisualProgramming.ZeroTouchLibrary" Version="$(DynamoNuGetVersion)" />
+  </ItemGroup>
+
+</Project>

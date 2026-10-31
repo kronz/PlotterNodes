@@ -1,0 +1,20 @@
+{
+  "license": "MIT",
+  "file_hash": null,
+  "name": "PlotterNodes",
+  "version": "0.1.0",
+  "description": "Pen plotter drawing nodes: concentric offsets and halos around any Dynamo curves, hand-drawn wobble, background patterns (nested rectangles, circle clusters, framed grids, spirals), pen layers and AxiDraw-ready SVG export.",
+  "group": "Drawing",
+  "keywords": [ "plotter", "axidraw", "svg", "pen", "offset", "pattern", "drawing", "generative" ],
+  "dependencies": [],
+  "contents": "Plotter.Shape, Plotter.Polyline, Plotter.DistanceField, Plotter.Pattern, Plotter.Layer, Plotter.Drawing, Plotter.Page, Plotter.Noise",
+  "engine_version": "4.0.0.0",
+  "engine": "dynamo",
+  "engine_metadata": "",
+  "site_url": "",
+  "repository_url": "",
+  "contains_binaries": true,
+  "node_libraries": [
+    "PlotterNodes, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

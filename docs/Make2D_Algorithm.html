@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PlotterNodes Make2D: algorithm and dependencies</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { --ink:#1a1a1a; --muted:#5f6368; --line:#d9d9d9; --bg:#ffffff; --panel:#f5f5f5; --accent:#0696d7; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:16px/1.55 "Segoe UI", Arial, sans-serif; color:var(--ink); background:var(--bg); }
+  main { max-width:980px; margin:0 auto; padding:40px 28px 80px; }
+  h1 { font-size:32px; margin:0 0 6px; }
+  h2 { font-size:23px; margin:44px 0 10px; padding-top:12px; border-top:1px solid var(--line); }
+  h3 { font-size:18px; margin:26px 0 6px; }
+  p.lead { color:var(--muted); font-size:18px; margin-top:0; }
+  code { font-family:Consolas, "Courier New", monospace; font-size:14px; background:var(--panel); padding:1px 5px; border-radius:3px; }
+  table { border-collapse:collapse; width:100%; margin:12px 0 4px; font-size:15px; }
+  th, td { border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top; }
+  th { background:var(--panel); font-weight:600; }
+  .mermaid { background:#fafafa; border:1px solid var(--line); border-radius:6px; padding:16px; margin:14px 0; text-align:center; }
+  .note { border-left:4px solid var(--accent); background:#f0f8fc; padding:10px 14px; margin:14px 0; }
+  nav ol { columns:2; color:var(--muted); }
+  nav a { color:var(--accent); text-decoration:none; }
+  ol li, ul li { margin:4px 0; }
+</style>
+</head>
+<body>
+<main>
+<h1>Make2D: algorithm and dependencies</h1>
+<p class="lead">How the PlotterNodes <code>Make2D</code> nodes turn Dynamo solids, surfaces, meshes and curves into 2D hidden-line drawings for pen plotting.</p>
+
+<nav>
+<ol>
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#deps">Dependencies</a></li>
+  <li><a href="#pipeline">Pipeline</a></li>
+  <li><a href="#input">Stage 1: input collection</a></li>
+  <li><a href="#topology">Stage 2: mesh topology</a></li>
+  <li><a href="#classify">Stage 3: edge classification</a></li>
+  <li><a href="#project">Stage 4: view, clipping and projection</a></li>
+  <li><a href="#split">Stage 5: splitting</a></li>
+  <li><a href="#visibility">Stage 6: visibility test</a></li>
+  <li><a href="#output">Stage 7: cleanup and output</a></li>
+  <li><a href="#params">Parameters and tolerances</a></li>
+  <li><a href="#limits">Limitations and open issues</a></li>
+</ol>
+</nav>
+
+<h2 id="overview">Overview</h2>
+<p>Make2D reproduces Rhino's Make2D command inside Dynamo. It projects 3D geometry onto an image plane and splits the resulting lines into those visible from the viewpoint and those hidden behind other geometry. ProtoGeometry (Dynamo's wrapper around the Autodesk Shape Manager kernel, ASM) exposes no silhouette or hidden-line function, so the visibility computation is done on a triangle mesh by a kernel-free engine in <code>Internal/HiddenLine.cs</code>. ASM is used only to mesh solids and surfaces and to sample curves.</p>
+<p>Three Dynamo nodes create a drawing:</p>
+<table>
+  <tr><th>Node</th><th>Projection</th><th>Drawing frame</th></tr>
+  <tr><td><code>Make2D.ByDirection</code></td><td>Parallel along a view direction (plan, elevation, isometric)</td><td>Origin is the projected world origin; +y is the up vector (default world Z, world Y for plan views)</td></tr>
+  <tr><td><code>Make2D.ByPlane</code></td><td>Parallel onto a Dynamo plane, viewed against its normal</td><td>Plane origin and X/Y axes</td></tr>
+  <tr><td><code>Make2D.ByCamera</code></td><td>Perspective from an eye point towards a target</td><td>Target projects to (0, 0); square window set by the field of view, returned by <code>Frame</code></td></tr>
+</table>
+
+<h2 id="deps">Dependencies</h2>
+<div class="mermaid">
+flowchart LR
+  subgraph Dynamo["Dynamo 4.x host (.NET 10)"]
+    DS["DynamoServices.dll<br/>attributes, IGraphicItem"]
+    PG["ProtoGeometry.dll<br/>Autodesk.DesignScript.Geometry"]
+    LG["LibG / ASM<br/>geometry kernel"]
+    PG --> LG
+  end
+  subgraph Pkg["PlotterNodes.dll"]
+    M2D["Make2D.cs<br/>public node class, queries, preview"]
+    DG["DynamoGeometry.cs<br/>ByDirection, ByPlane, ByCamera,<br/>input collection (DYNAMO_GEOMETRY only)"]
+    HL["Internal/HiddenLine.cs<br/>hidden-line engine"]
+    V["Internal/Vec2, Vec3, Box,<br/>Geometry2D.Simplify"]
+    PL["Polyline, Layer, Drawing<br/>SVG export"]
+  end
+  DG -->|"Mesh.ByGeometry<br/>Mesh.TrianglesAsNineNumbers<br/>Curve.PointAtParameter"| PG
+  DG --> HL
+  M2D --> HL
+  HL --> V
+  M2D -->|"results as Polyline"| PL
+  M2D --> DS
+  DG --> DS
+</div>
+<table>
+  <tr><th>Dependency</th><th>Used for</th><th>Notes</th></tr>
+  <tr><td><code>ProtoGeometry.dll</code> (ASM through LibG)</td><td><code>Mesh.ByGeometry(geometry, tolerance, 512)</code> to mesh solids, surfaces and polysurfaces; <code>Mesh.TrianglesAsNineNumbers</code> to read triangles; <code>Curve.PointAtParameter</code>, <code>PolyCurve.Curves</code>, <code>Line.StartPoint/EndPoint</code> to sample curves; <code>Plane</code>, <code>Point</code>, <code>Vector</code> for view input; <code>PolyCurve.ByPoints</code> for <code>ToPolyCurves</code></td><td>Compiled only with the <code>DYNAMO_GEOMETRY</code> symbol, so the engine can be smoke-tested headlessly without the kernel</td></tr>
+  <tr><td><code>DynamoServices.dll</code></td><td>Zero-touch attributes (<code>MultiReturn</code>, <code>ArbitraryDimensionArrayImport</code>, <code>DefaultArgument</code>, <code>IsVisibleInDynamoLibrary</code>) and <code>IGraphicItem</code> for the background preview</td><td>Headless builds use a shim compiled from the Dynamo repo sources</td></tr>
+  <tr><td>.NET base library</td><td>Collections, math</td><td>No third-party packages</td></tr>
+  <tr><td>PlotterNodes internals</td><td><code>Vec2</code>, <code>Vec3</code>, <code>Box</code>, <code>Geometry2D.Simplify</code> (Douglas-Peucker), <code>Polyline</code></td><td>Shared with the rest of the library</td></tr>
+</table>
+<div class="note">ASM functions that were checked and are <em>not</em> used for visibility: <code>Curve.Project</code>, <code>Curve.PullOntoPlane</code>, <code>Surface.ProjectInputOnto</code>, <code>Geometry.Intersect</code>. They project or intersect, but none computes silhouettes or occlusion.</div>
+
+<h2 id="pipeline">Pipeline</h2>
+<div class="mermaid">
+flowchart TD
+  A["Dynamo geometry<br/>solids, surfaces, meshes, curves"] --> B["1. Input collection<br/>mesh solids/surfaces, sample curves"]
+  B --> C["2. Mesh topology (per body)<br/>weld vertices, drop degenerate triangles,<br/>make winding consistent, face normals"]
+  C --> D["3. Edge classification (per body)<br/>boundary, crease, silhouette, smooth<br/>T-junction partner matching"]
+  B --> E["Free curves as 3D polylines"]
+  C --> F["4. View transform<br/>eye space, frustum clipping (perspective),<br/>projection with depth key"]
+  D --> F
+  E --> F
+  F --> G["5. Splitting<br/>at 2D crossings with other lines<br/>and at points where a line pierces a face"]
+  G --> H["6. Visibility<br/>midpoint depth test against<br/>a uniform grid of projected triangles"]
+  H --> I["7. Cleanup<br/>dedupe, drop hidden lines under visible ones,<br/>chain into polylines, simplify"]
+  I --> J["Make2D result<br/>VisibleLines, HiddenLines, Silhouettes,<br/>Creases, Curves, Hidden*, Frame"]
+</div>
+
+<h2 id="input">Stage 1: input collection</h2>
+<p><code>DynamoGeometry.cs</code> walks the input list recursively (nested lists allowed):</p>
+<table>
+  <tr><th>Input type</th><th>Handling</th></tr>
+  <tr><td><code>Solid</code>, <code>Surface</code>, <code>PolySurface</code>, other <code>Geometry</code></td><td><code>Mesh.ByGeometry(g, meshTolerance, 512)</code>, then <code>TrianglesAsNineNumbers</code>: three corner points per triangle. Each input becomes one body.</td></tr>
+  <tr><td><code>Mesh</code></td><td>Read the same way, without re-meshing</td></tr>
+  <tr><td><code>Curve</code>, <code>PolyCurve</code>, <code>Line</code></td><td>Sampled to a 3D polyline. Lines keep their two end points; other curves use a segment length derived from the scene size or <code>meshTolerance</code></td></tr>
+  <tr><td><code>Point</code>, <code>Plane</code>, <code>Vector</code>, <code>CoordinateSystem</code>, <code>BoundingBox</code>, strings</td><td>Ignored</td></tr>
+</table>
+<p>Triangles are read with <code>VerticesAsThreeNumbers</code> + <code>VertexIndicesByTri</code> when those reproduce <code>TrianglesAsNineNumbers</code> exactly, which keeps the per-face vertex sharing used in stage 2; otherwise the raw corners are used and stage 2 rebuilds the shared vertices. <code>Make2D.Diagnostics</code> reports the source, edge counts and classification mode per body.</p>
+
+<h2 id="topology">Stage 2: mesh topology</h2>
+<ol>
+  <li><strong>Weld.</strong> Vertices closer than <code>tol = 1e-6 × scene diagonal</code> are merged using a 3D hash grid (with neighbour-cell probing so points straddling a cell border still merge). Triangles that collapse to a line or point are dropped.</li>
+  <li><strong>Edge map.</strong> Every triangle edge is keyed by its sorted vertex pair; each key lists the faces that use it.</li>
+  <li><strong>Orientation.</strong> A breadth-first walk over edges shared by exactly two faces flips neighbours so both faces traverse the shared edge in opposite directions. This makes winding consistent within each connected patch; the global sign does not matter, because only <em>changes</em> between front-facing and back-facing are used.</li>
+  <li><strong>B-rep edges.</strong> For solids, surfaces and polysurfaces the real edges come from ASM (<code>Topology.Edges</code>, sampled as 3D polylines). Mesh edges lying along them are crease candidates (kept when they fold more than 1.5 × the surrounding facet angle, so seams and tangent edges stay hidden); all other mesh edges are smooth and the crease angle is not used. Dynamo meshes and other triangle data use the crease angle.</li>
+  <li><strong>Per-face topology.</strong> Faceters mesh each B-rep face separately: triangles of one face share vertex indices, neighbouring faces only share positions. Edges shared in the input are inside a face; edges joined only by the weld are B-rep edges. When a body has both kinds, this replaces the crease angle (stage 3). The largest fold between same-face neighbours, spread over two rings of triangles, is the local facet angle.</li>
+  <li><strong>Normals and facing.</strong> Each face gets a unit normal and a front-facing flag for the current view (parallel: <code>n · forward &lt; 0</code>; perspective: <code>n · (p − eye) &lt; 0</code>).</li>
+</ol>
+
+<h2 id="classify">Stage 3: edge classification</h2>
+<div class="mermaid">
+flowchart TD
+  E["Mesh edge"] --> N{"How many faces<br/>use it?"}
+  N -->|"3 or more"| CR["Crease<br/>(non-manifold)"]
+  N -->|"2"| D{"Angle between<br/>face normals &gt; creaseAngle?"}
+  D -->|"yes (or, in per-face topology mode: weld-joined edge<br/>folding more than 1.5 x the local facet angle)"| CR2["Crease"]
+  D -->|"no"| S{"One face front-facing,<br/>the other back-facing?"}
+  S -->|"yes"| SI["Silhouette"]
+  S -->|"no"| SM["Smooth: not drawn"]
+  N -->|"1"| T{"Collinear overlapping boundary<br/>edge of another face?<br/>(T-junction)"}
+  T -->|"no"| BO["Boundary"]
+  T -->|"yes"| P["Split into covered stretches;<br/>classify each stretch as if shared<br/>(partner normal sign corrected)"]
+  P --> CR3["Crease / Silhouette / Smooth"]
+  P --> BO2["Uncovered stretches: Boundary"]
+</div>
+<p>Crease, boundary and curve classification is independent of the view. Silhouettes depend on the view because they come from the front/back flags. T-junctions arise when two adjacent faces were tessellated with different divisions along their common edge; without matching, smooth surfaces would show spurious boundary lines. Partner edges are found with a 3D hash of boundary edges (cell size from the mean and maximum boundary edge length) and must lie on the same line within <code>tol</code>.</p>
+
+<h2 id="project">Stage 4: view, clipping and projection</h2>
+<ol>
+  <li><strong>Eye space.</strong> Points are expressed as (x right, y up, z along the view axis). The basis comes from the view direction and the up vector; when the up vector is missing or parallel to the view, world Z is used (world Y for views along Z).</li>
+  <li><strong>Clipping (perspective only).</strong> Triangles (Sutherland-Hodgman) and segments are clipped to a near plane and four side planes of the square field of view. The side planes are inflated by 1e-9 so geometry lying exactly on the window edge is kept.</li>
+  <li><strong>Projection.</strong> Parallel: <code>(x, y)</code> with depth key <code>z</code>. Perspective: <code>(x·d/z, y·d/z)</code> with key <code>−1/z</code>, where <code>d</code> is the image plane distance. Both keys vary linearly across a projected triangle, so they can be interpolated with screen-space barycentric weights. Edges seen end-on project to a point and are dropped.</li>
+</ol>
+
+<h2 id="split">Stage 5: splitting</h2>
+<p>Visibility of a line can only change where, in the drawing, it crosses another feature line or passes through a face. Each projected segment is cut at:</p>
+<ol>
+  <li><strong>2D crossings</strong> with other feature segments (found through a uniform screen grid). Parallel segments are tested for collinear overlap and cut at the other segment's end points; the parallel test is relative (<code>|cross| ≤ 1e-12 · |r|·|q|</code>).</li>
+  <li><strong>Piercing points</strong> where the segment's depth equals the depth of a triangle's plane inside that triangle (a curve entering a solid, or interpenetrating bodies). Both depths are linear in the segment parameter, so the root is found directly.</li>
+</ol>
+
+<h2 id="visibility">Stage 6: visibility test</h2>
+<div class="mermaid">
+sequenceDiagram
+  participant P as Piece (split segment)
+  participant G as Screen grid
+  participant T as Projected triangles
+  P->>G: midpoint (x, y), depth d
+  G->>T: triangles whose bounding box covers the cell
+  loop each candidate triangle
+    T->>T: barycentric test at (x, y)
+    T->>T: interpolate depth key, convert to depth
+    alt triangle depth &lt; d − depthEps
+      T-->>P: hidden
+    end
+  end
+  P-->>P: visible if no triangle is in front
+</div>
+<p>Triangles sharing a vertex with a silhouette edge are skipped when testing that silhouette: a mesh contour zigzags around the true contour, so its neighbouring facets can appear to cover it. Edge-on triangles (screen area ≈ 0) are excluded from the occluder grid. <code>depthEps = 1e-6 × scene diagonal</code> lets lines lying on their own faces count as visible. The grid cell size is about twice the drawing diagonal divided by √(triangles + segments), capped at 2048 × 2048 cells.</p>
+
+<h2 id="output">Stage 7: cleanup and output</h2>
+<ol>
+  <li><strong>Deduplicate.</strong> End points are quantised to the merge tolerance; identical visible pieces are kept once. Hidden pieces that coincide with a visible piece are dropped (for example the hidden bottom edges under the top edges in a plan view).</li>
+  <li><strong>Hidden under visible.</strong> Hidden pieces lying within 0.3 % of the drawing diagonal of visible lines along their whole length are dropped (the second rim of a cracked mesh, a hidden rim running along its silhouette).</li>
+  <li><strong>Overlaps.</strong> Pieces running along an already kept piece of the same visibility within 0.15 % are drawn once (the fan of tiny contour edges where a contour runs along the view direction).</li>
+  <li><strong>Chain.</strong> Pieces of the same kind are joined end to end; a chain stops at junctions where three or more pieces meet, so every polyline is an unambiguous pen stroke. Chains whose ends meet become closed loops.</li>
+  <li><strong>Simplify.</strong> Douglas-Peucker at half the merge tolerance removes collinear vertices.</li>
+</ol>
+<table>
+  <tr><th>Query</th><th>Contents</th></tr>
+  <tr><td><code>VisibleLines</code> / <code>HiddenLines</code></td><td>All visible / all hidden polylines</td></tr>
+  <tr><td><code>Silhouettes</code> / <code>HiddenSilhouettes</code></td><td>Silhouettes and boundary lines</td></tr>
+  <tr><td><code>Creases</code> / <code>HiddenCreases</code></td><td>Crease lines</td></tr>
+  <tr><td><code>Curves</code> / <code>HiddenCurves</code></td><td>Projected free curves</td></tr>
+  <tr><td><code>Frame</code></td><td>Perspective window square, or the bounding rectangle for parallel views</td></tr>
+  <tr><td><code>TriangleCount</code>, <code>Bounds</code>, <code>ToPolyCurves</code></td><td>Mesh size, visible extents, visible lines as Dynamo PolyCurves</td></tr>
+</table>
+
+<h2 id="params">Parameters and tolerances</h2>
+<table>
+  <tr><th>Name</th><th>Default</th><th>Effect</th></tr>
+  <tr><td><code>meshTolerance</code></td><td>−1 (Dynamo chooses)</td><td>Mesh deviation for solids and surfaces; smaller gives smoother silhouettes and more triangles</td></tr>
+  <tr><td><code>creaseAngle</code></td><td>20°</td><td>Edges whose face normals differ by more than this are drawn as creases</td></tr>
+  <tr><td><code>mergeTolerance</code></td><td>0 (automatic, 1e-8 × drawing diagonal)</td><td>Lines closer than this count as one. Floored at 1e-9 × drawing diagonal to avoid integer overflow in the end-point keys</td></tr>
+  <tr><td><code>fieldOfView</code></td><td>60°</td><td>Full angle of the square perspective window</td></tr>
+  <tr><td><code>imagePlaneDistance</code></td><td>0 (eye-target distance)</td><td>Perspective scale; geometry at this distance appears at true size</td></tr>
+  <tr><td>Internal <code>tol</code></td><td>1e-6 × scene diagonal</td><td>Vertex weld and T-junction collinearity</td></tr>
+  <tr><td>Internal <code>depthEps</code></td><td>1e-6 × scene diagonal</td><td>Depth margin in the visibility test</td></tr>
+</table>
+
+<h2 id="limits">Limitations and open issues</h2>
+<ol>
+  <li>Accuracy equals mesh resolution: curved silhouettes are polygonal at the <code>meshTolerance</code> chosen.</li>
+  <li>Edges come from mesh angles, not from the B-rep. A B-rep edge whose faces meet at less than <code>creaseAngle</code> is drawn only where it happens to be a silhouette; tangent edges are never drawn.</li>
+  <li>Intersection curves between interpenetrating solids are not created (same as Rhino); pass them in as curves.</li>
+  <li>Visibility is decided at each piece's midpoint, so correctness relies on stage 5 splitting at every place visibility can change.</li>
+  <li><strong>Test suite:</strong> <code>tests/make2d</code> checks 364 cases (26 analytic shapes × 14 views) against exact ray-cast ground truth; the prototype passes 363. Run the C# engine with <code>build.ps1 -Make2DTests</code>.</li>
+  <li><strong>Open issue (2026-10-27):</strong> a cube with a spherical cavity, viewed from slightly different perspective cameras, loses parts of face rim edges in some views; the rims are classified hidden. The reader now uses <code>TrianglesAsNineNumbers</code> instead of <code>VertexIndicesByTri</code> to rule out an index mismatch. If the problem persists, the exported mesh (<code>Mesh.ExportMeshes</code> to OBJ) and the camera values will be replayed in the Python mirror (<code>tools/hlr_prototype</code>) to identify the occluding triangle.</li>
+  <li>Possible improvement: take feature edges directly from ASM (<code>Topology.Edges</code>, <code>Edge.CurveGeometry</code>) and use the mesh only for silhouettes and occlusion.</li>
+</ol>
+
+<p style="color:var(--muted);margin-top:40px;font-size:14px">Source: <code>D:\Drawing\PlotterNodes\src\PlotterNodes\Internal\HiddenLine.cs</code>, <code>Make2D.cs</code>, <code>DynamoGeometry.cs</code>. Reference: Rhino Make2D command, docs.mcneel.com/rhino/mac/help/en-us/commands/make2d.htm. Diagrams need an internet connection (Mermaid is loaded from cdnjs).</p>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, theme: "neutral", flowchart: { htmlLabels: true, curve: "basis" } });</script>
+</body>
+</html>

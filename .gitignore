@@ -1,0 +1,12 @@
+bin/
+obj/
+package/PlotterNodes/bin/
+package/PlotterNodes/dyf/
+package/PlotterNodes/extra/
+smoke-output/
+*.user
+.vs/
+tests/make2d/results/
+tests/make2d/expected/
+tests/make2d/__pycache__/
+tools/hlr_prototype/out/

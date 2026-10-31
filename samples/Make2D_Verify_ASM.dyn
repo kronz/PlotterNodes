@@ -1,0 +1,440 @@
+{
+  "Uuid": "473daf00-8c42-586e-a8d5-54e19310ba7b",
+  "IsCustomNode": false,
+  "Description": "Checks Make2D.ByCamera against ASM ray intersections on a cube with a spherical cavity and captures the ASM mesh for the test suite.",
+  "Name": "Make2D_Verify_ASM",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Line": {
+        "Key": "Autodesk.DesignScript.Geometry.Line",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Arc": {
+        "Key": "Autodesk.DesignScript.Geometry.Arc",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Circle": {
+        "Key": "Autodesk.DesignScript.Geometry.Circle",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Ellipse": {
+        "Key": "Autodesk.DesignScript.Geometry.Ellipse",
+        "Value": "ProtoGeometry.dll"
+      },
+      "PolyCurve": {
+        "Key": "Autodesk.DesignScript.Geometry.PolyCurve",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "Id": "05c38d5fa97d57cfa48c93a3349e74b0",
+      "NodeType": "CodeBlockNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "845293eee329564bb13a2a8bb1a6212e",
+          "Name": "side",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "9de45d04e5bf5ee5ae6f431ade8a069c",
+          "Name": "R",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "6a6f9e823ef753d0972f6d8e27a1c8fb",
+          "Name": "eye",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "70b602510bbc52539f212a587c56d34d",
+          "Name": "target",
+          "Description": "Value of expression at line 4",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "cb304b7e826a5ba38c8b00fe69d51d20",
+          "Name": "fov",
+          "Description": "Value of expression at line 5",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4b783ff9cc7e53949554667ddaf324bf",
+          "Name": "meshTol",
+          "Description": "Value of expression at line 6",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "03110499ceeb5b8b92bc1b414ee3be7b",
+          "Name": "captureFolder",
+          "Description": "Value of expression at line 7",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4792d4f0c4af56a29de077ca676b8113",
+          "Name": "cube",
+          "Description": "Value of expression at line 8",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c6b3c42520145b958e0a58d10b1d44f9",
+          "Name": "ball",
+          "Description": "Value of expression at line 9",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b37ef1d40bcb5a47aef9c1dba38624ca",
+          "Name": "solid",
+          "Description": "Value of expression at line 10",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f45c4823b382515aa516477fda7f8e4f",
+          "Name": "edgeCurves",
+          "Description": "Value of expression at line 11",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a448e8eaa636544a8540e8c23b43ecb9",
+          "Name": "samples",
+          "Description": "Value of expression at line 12",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "086cd44d4d725fb8af1de66d0e026f19",
+          "Name": "toEye",
+          "Description": "Value of expression at line 13",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "cc539b09bab85f4ca344c738fd5ff73e",
+          "Name": "sightLines",
+          "Description": "Value of expression at line 14",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3ebdcdb3fe455ff3bd4a029fe6994486",
+          "Name": "asmHidden",
+          "Description": "Value of expression at line 15",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8eb59a5173d854d683f58afebf72125d",
+          "Name": "fwd",
+          "Description": "Value of expression at line 16",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "edfa50e9e386513b872d248fa4f910be",
+          "Name": "rgt",
+          "Description": "Value of expression at line 17",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "cab7dcc849555a0887c8f8927c5cf625",
+          "Name": "upv",
+          "Description": "Value of expression at line 18",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "9952950a909258c9bad019787d8a8a9a",
+          "Name": "dist",
+          "Description": "Value of expression at line 19",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5c96f7dbc16155b1b8b32339f6893ddc",
+          "Name": "offset",
+          "Description": "Value of expression at line 20",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "33677163f3d15f599b055b7233d6d214",
+          "Name": "rel",
+          "Description": "Value of expression at line 21",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1a2f453bc70a597ca2753037e4dfd647",
+          "Name": "depth",
+          "Description": "Value of expression at line 22",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "96c482a9ff0c54288bdb43003c774e39",
+          "Name": "drawn",
+          "Description": "Value of expression at line 23",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "42e34399814857088a97bb7ec5eb73fb",
+          "Name": "flatPts",
+          "Description": "Value of expression at line 24",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "870586ded65c50178149997f0932d5e4",
+          "Name": "flatHidden",
+          "Description": "Value of expression at line 25",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "cf1e9f0d66155870980fce9ef1b265ce",
+          "Name": "asmVisiblePoints",
+          "Description": "Value of expression at line 26",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b7403eaf5cd358ebb09a0b198aa1b397",
+          "Name": "asmHiddenPoints",
+          "Description": "Value of expression at line 27",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "cc8cbaf537715a5787dfdd2a1c49e0d0",
+          "Name": "m",
+          "Description": "Value of expression at line 28",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "aac1f0986a655cff9136c460350c6476",
+          "Name": "diagnostics",
+          "Description": "Value of expression at line 29",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c2da100ceace5a51b09a85fb1a070001",
+          "Name": "make2dVisible",
+          "Description": "Value of expression at line 30",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "cd7871b177a052c48a921f12f46b93a6",
+          "Name": "make2dCreases",
+          "Description": "Value of expression at line 31",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5647891828d95501b230eb70e0386c36",
+          "Name": "make2dSilhouettes",
+          "Description": "Value of expression at line 32",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "0d3cc101b67b56f0a604667fb4f1e053",
+          "Name": "counts",
+          "Description": "Value of expression at line 33",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8f45272cdc345026ad459aac5d18e435",
+          "Name": "captured",
+          "Description": "Value of expression at line 34",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly",
+      "Code": "// Inputs: edit these. side and R match the test suite shape (cube 10, sphere radius 6.8).\nside = 10;\nR = 6.8;\neye = Point.ByCoordinates(28, -38, 22);\ntarget = Point.ByCoordinates(0, 0, 0);\nfov = 40;\nmeshTol = -1;\ncaptureFolder = \"D:/Drawing/PlotterNodes/tests/make2d/captured\";\n// The solid\ncube = Cuboid.ByLengths(Point.Origin(), side, side, side);\nball = Sphere.ByCenterPointRadius(Point.Origin(), R);\nsolid = cube.Difference(ball);\n// Ground truth from ASM: sample every B-rep edge and cast a line to the eye\nedgeCurves = solid.Edges.CurveGeometry;\nsamples = edgeCurves.PointsAtEqualChordLength(60);\ntoEye = Vector.ByTwoPoints(samples, eye).Normalized();\nsightLines = Line.ByStartPointEndPoint(samples.Translate(toEye, side * 0.002), eye);\nasmHidden = sightLines.DoesIntersect(solid);\n// Project the samples the way Make2D.ByCamera does\nfwd = Vector.ByTwoPoints(eye, target).Normalized();\nrgt = fwd.Cross(Vector.ZAxis()).Normalized();\nupv = rgt.Cross(fwd);\ndist = eye.DistanceTo(target);\noffset = 2 * side;\nrel = Vector.ByTwoPoints(eye, samples);\ndepth = rel.Dot(fwd);\ndrawn = Point.ByCoordinates(rel.Dot(rgt) * dist / depth + offset, rel.Dot(upv) * dist / depth, 0);\nflatPts = List.Flatten(drawn, -1);\nflatHidden = List.Flatten(asmHidden, -1);\nasmVisiblePoints = List.FilterByBoolMask(flatPts, flatHidden)[\"out\"];\nasmHiddenPoints = List.FilterByBoolMask(flatPts, flatHidden)[\"in\"];\n// Make2D on the same solid and camera, drawn at the same place (Creases and Silhouettes repeated below)\nm = Plotter.Make2D.ByCamera([solid], eye, target, null, fov, 0, meshTol);\ndiagnostics = m.Diagnostics;\nmake2dVisible = m.VisibleLines.ToPolyCurve().Translate(offset, 0, 0);\nmake2dCreases = m.Creases.ToPolyCurve().Translate(offset, -1.6 * side, 0);\nmake2dSilhouettes = m.Silhouettes.ToPolyCurve().Translate(offset + 1.6 * side, -1.6 * side, 0);\ncounts = [List.Count(asmVisiblePoints), List.Count(asmHiddenPoints), List.Count(m.Creases), List.Count(m.Silhouettes)];\n// Exact engine input written for replay in the test suite (python tests/make2d/replay_capture.py)\ncaptured = m.ExportTestCase(captureFolder, \"verify\");"
+    }
+  ],
+  "Connectors": [],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [
+    {
+      "Name": "PlotterNodes",
+      "Version": "0.1.0",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "05c38d5fa97d57cfa48c93a3349e74b0"
+      ]
+    }
+  ],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [],
+  "Author": "PlotterNodes samples",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "4.0.0.0",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 10.0,
+      "EyeY": -60.0,
+      "EyeZ": 40.0,
+      "LookX": 0.0,
+      "LookY": 60.0,
+      "LookZ": -40.0,
+      "UpX": 0.0,
+      "UpY": 0.0,
+      "UpZ": 1.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Make2D vs ASM",
+        "Id": "05c38d5fa97d57cfa48c93a3349e74b0",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 80.0
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "72e930cbaca25e9bb9cbebeda4b7663c",
+        "Title": "Make2D versus ASM: same solid, same camera",
+        "DescriptionText": "Green-check: ASM-visible points should lie on Make2D visible lines; ASM-hidden points should not. Run once; the captured case lands in tests/make2d/captured.",
+        "IsExpanded": true,
+        "WidthAdjustment": 0.0,
+        "HeightAdjustment": 0.0,
+        "Nodes": [
+          "05c38d5fa97d57cfa48c93a3349e74b0"
+        ],
+        "HasNestedGroups": false,
+        "Left": -20.0,
+        "Top": 0.0,
+        "Width": 340.0,
+        "Height": 940.0,
+        "FontSize": 36.0,
+        "GroupStyleId": "00000000-0000-0000-0000-000000000000",
+        "InitialTop": 70.0,
+        "InitialHeight": 870.0,
+        "TextblockHeight": 60.0,
+        "Background": "#FFC1D676"
+      }
+    ],
+    "X": 40.0,
+    "Y": 40.0,
+    "Zoom": 0.4
+  }
+}

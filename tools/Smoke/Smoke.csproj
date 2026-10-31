@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Headless smoke test / sample generator. Exercises the node library outside Dynamo and
+    writes example SVGs. The library must be built against the DynamoServices shim, which is
+    selected with global properties (they must be global so that NuGet restore sees them):
+
+      dotnet run (two dashes)project tools/Smoke/Smoke.csproj -c Release
+        -p:DynamoServicesShim=[full path]/tools/DynamoServicesShim/DynamoServicesShim.csproj
+        -p:UseDynamoGeometry=false -p:SkipPackage=true -p:DynamoRepo=[path to Dynamo checkout]
+        (two dashes) [output folder]
+
+    build.ps1 -Smoke does this for you.
+  -->
+
+  <PropertyGroup>
+    <DotNet Condition="'$(DotNet)' == ''">net10.0</DotNet>
+    <TargetFramework>$(DotNet)</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PlotterNodes\PlotterNodes.csproj" />
+    <ProjectReference Include="..\DynamoServicesShim\DynamoServicesShim.csproj" />
+  </ItemGroup>
+
+</Project>

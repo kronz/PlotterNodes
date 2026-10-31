@@ -1,0 +1,86 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    PlotterNodes: zero-touch node library for Dynamo.
+
+    Reference modes (pick one on the command line, default is NuGet):
+      1. NuGet (default)      dotnet build -c Release
+                              -> DynamoVisualProgramming.ZeroTouchLibrary $(DynamoNuGetVersion)
+      2. Local Dynamo build   dotnet build -c Release -p:DynamoBinDir=D:\Drawing\Dynamo\bin\AnyCPU\Release
+                              -> references DynamoServices.dll / ProtoGeometry.dll from that folder
+      3. Headless / sandbox   dotnet build -c Release -p:DynamoServicesShim=..\..\tools\DynamoServicesShim\DynamoServicesShim.csproj -p:UseDynamoGeometry=false
+                              -> no ProtoGeometry; the Dynamo geometry interop file is excluded
+
+    Target framework comes from $(DotNet) (default net10.0 for Dynamo 4.x; use net8.0 for Dynamo 3.x).
+  -->
+
+  <PropertyGroup>
+    <DotNet Condition="'$(DotNet)' == ''">net10.0</DotNet>
+    <TargetFramework>$(DotNet)</TargetFramework>
+    <AssemblyName>PlotterNodes</AssemblyName>
+    <RootNamespace>Plotter</RootNamespace>
+    <Version>0.1.0</Version>
+    <Authors>Zach Kron</Authors>
+    <Description>Zero-touch Dynamo nodes for generating pen plotter drawings (concentric offsets, hand-drawn wobble, background patterns) and exporting AxiDraw-ready SVG.</Description>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <Deterministic>true</Deterministic>
+
+    <DynamoNuGetVersion Condition="'$(DynamoNuGetVersion)' == ''">4.2.1.5887</DynamoNuGetVersion>
+    <UseDynamoGeometry Condition="'$(UseDynamoGeometry)' == ''">true</UseDynamoGeometry>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(UseDynamoGeometry)' == 'true'">
+    <DefineConstants>$(DefineConstants);DYNAMO_GEOMETRY</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Mode 1: NuGet. ExcludeAssets=runtime keeps Dynamo's own DLLs out of the package bin folder. -->
+  <ItemGroup Condition="'$(DynamoBinDir)' == '' and '$(DynamoServicesShim)' == ''">
+    <PackageReference Include="DynamoVisualProgramming.ZeroTouchLibrary" Version="$(DynamoNuGetVersion)" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <!-- Mode 2: a local Dynamo build or install folder. Private=false: never copy Dynamo DLLs next to the package. -->
+  <ItemGroup Condition="'$(DynamoBinDir)' != ''">
+    <Reference Include="DynamoServices">
+      <HintPath>$(DynamoBinDir)\DynamoServices.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ProtoGeometry" Condition="'$(UseDynamoGeometry)' == 'true'">
+      <HintPath>$(DynamoBinDir)\ProtoGeometry.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Mode 3: shim built from the Dynamo repo sources (attributes + IGraphicItem only). -->
+  <ItemGroup Condition="'$(DynamoServicesShim)' != ''">
+    <ProjectReference Include="$(DynamoServicesShim)">
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+  <!-- Package layout: everything Dynamo needs is assembled under $(PackageDir) after a build. -->
+  <PropertyGroup>
+    <PackageDir Condition="'$(PackageDir)' == ''">$(MSBuildThisFileDirectory)..\..\package\PlotterNodes\</PackageDir>
+  </PropertyGroup>
+
+  <Target Name="AssembleDynamoPackage" AfterTargets="Build" Condition="'$(SkipPackage)' != 'true'">
+    <ItemGroup>
+      <_PkgBin Include="$(OutDir)PlotterNodes.dll;$(OutDir)PlotterNodes.xml;$(OutDir)PlotterNodes.pdb" />
+      <_PkgExtra Include="$(MSBuildThisFileDirectory)..\..\samples\*.dyn" />
+      <_PkgNumerals Include="$(MSBuildThisFileDirectory)..\..\samples\Numerals\*.dyn" />
+    </ItemGroup>
+    <MakeDir Directories="$(PackageDir)bin;$(PackageDir)dyf;$(PackageDir)extra" />
+    <Copy SourceFiles="@(_PkgBin)" DestinationFolder="$(PackageDir)bin" SkipUnchangedFiles="true" Condition="Exists('%(FullPath)')" />
+    <Copy SourceFiles="@(_PkgExtra)" DestinationFolder="$(PackageDir)extra" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_PkgNumerals)" DestinationFolder="$(PackageDir)extra\Numerals" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)pkg.json" DestinationFolder="$(PackageDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Dynamo package assembled at $(PackageDir)" />
+  </Target>
+
+</Project>

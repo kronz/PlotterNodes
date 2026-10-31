@@ -1,0 +1,2948 @@
+{
+  "assembly": "PlotterNodes, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null",
+  "functions": {
+    "Plotter.DistanceField.Bounds": [
+      {
+        "signature": "Plotter.DistanceField.Bounds",
+        "static": false,
+        "class": "Plotter.DistanceField",
+        "method": "Bounds",
+        "thisName": "distanceField",
+        "params": [],
+        "returnDs": "var",
+        "returnCs": "System.Collections.Generic.Dictionary\u003CSystem.String, System.Object\u003E",
+        "multiReturn": [
+          "minX",
+          "minY",
+          "maxX",
+          "maxY"
+        ]
+      }
+    ],
+    "Plotter.DistanceField.ByPolylines": [
+      {
+        "signature": "Plotter.DistanceField.ByPolylines@Plotter.Polyline[],double,double",
+        "static": true,
+        "class": "Plotter.DistanceField",
+        "method": "ByPolylines",
+        "thisName": null,
+        "params": [
+          {
+            "name": "polylines",
+            "ds": "Plotter.Polyline[]",
+            "cs": "System.Collections.Generic.IList\u003CPlotter.Polyline\u003E",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "resolution",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.25"
+          },
+          {
+            "name": "padding",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "5"
+          }
+        ],
+        "returnDs": "Plotter.DistanceField",
+        "returnCs": "Plotter.DistanceField",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.DistanceField.ByShape": [
+      {
+        "signature": "Plotter.DistanceField.ByShape@Plotter.Shape,double,double",
+        "static": true,
+        "class": "Plotter.DistanceField",
+        "method": "ByShape",
+        "thisName": null,
+        "params": [
+          {
+            "name": "shape",
+            "ds": "Plotter.Shape",
+            "cs": "Plotter.Shape",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "resolution",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.25"
+          },
+          {
+            "name": "padding",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "5"
+          }
+        ],
+        "returnDs": "Plotter.DistanceField",
+        "returnCs": "Plotter.DistanceField",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.DistanceField.Contour": [
+      {
+        "signature": "Plotter.DistanceField.Contour@double,double",
+        "static": false,
+        "class": "Plotter.DistanceField",
+        "method": "Contour",
+        "thisName": "distanceField",
+        "params": [
+          {
+            "name": "level",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "simplifyTolerance",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.05"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.DistanceField.Contours": [
+      {
+        "signature": "Plotter.DistanceField.Contours@double[],double",
+        "static": false,
+        "class": "Plotter.DistanceField",
+        "method": "Contours",
+        "thisName": "distanceField",
+        "params": [
+          {
+            "name": "levels",
+            "ds": "double[]",
+            "cs": "System.Collections.Generic.IList\u003CSystem.Double\u003E",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "simplifyTolerance",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.05"
+          }
+        ],
+        "returnDs": "Plotter.Shape[]",
+        "returnCs": "System.Collections.Generic.IList\u003CPlotter.Shape\u003E",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.DistanceField.Difference": [
+      {
+        "signature": "Plotter.DistanceField.Difference@Plotter.DistanceField",
+        "static": false,
+        "class": "Plotter.DistanceField",
+        "method": "Difference",
+        "thisName": "distanceField",
+        "params": [
+          {
+            "name": "other",
+            "ds": "Plotter.DistanceField",
+            "cs": "Plotter.DistanceField",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "Plotter.DistanceField",
+        "returnCs": "Plotter.DistanceField",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.DistanceField.Intersection": [
+      {
+        "signature": "Plotter.DistanceField.Intersection@Plotter.DistanceField",
+        "static": false,
+        "class": "Plotter.DistanceField",
+        "method": "Intersection",
+        "thisName": "distanceField",
+        "params": [
+          {
+            "name": "other",
+            "ds": "Plotter.DistanceField",
+            "cs": "Plotter.DistanceField",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "Plotter.DistanceField",
+        "returnCs": "Plotter.DistanceField",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.DistanceField.Invert": [
+      {
+        "signature": "Plotter.DistanceField.Invert",
+        "static": false,
+        "class": "Plotter.DistanceField",
+        "method": "Invert",
+        "thisName": "distanceField",
+        "params": [],
+        "returnDs": "Plotter.DistanceField",
+        "returnCs": "Plotter.DistanceField",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.DistanceField.Offset": [
+      {
+        "signature": "Plotter.DistanceField.Offset@double",
+        "static": false,
+        "class": "Plotter.DistanceField",
+        "method": "Offset",
+        "thisName": "distanceField",
+        "params": [
+          {
+            "name": "distance",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "Plotter.DistanceField",
+        "returnCs": "Plotter.DistanceField",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.DistanceField.Perturb": [
+      {
+        "signature": "Plotter.DistanceField.Perturb@double,double,int,int",
+        "static": false,
+        "class": "Plotter.DistanceField",
+        "method": "Perturb",
+        "thisName": "distanceField",
+        "params": [
+          {
+            "name": "amplitude",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "1"
+          },
+          {
+            "name": "wavelength",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "20"
+          },
+          {
+            "name": "seed",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "octaves",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "2"
+          }
+        ],
+        "returnDs": "Plotter.DistanceField",
+        "returnCs": "Plotter.DistanceField",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.DistanceField.Sample": [
+      {
+        "signature": "Plotter.DistanceField.Sample@double,double",
+        "static": false,
+        "class": "Plotter.DistanceField",
+        "method": "Sample",
+        "thisName": "distanceField",
+        "params": [
+          {
+            "name": "x",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "y",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "double",
+        "returnCs": "System.Double",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.DistanceField.SmoothUnion": [
+      {
+        "signature": "Plotter.DistanceField.SmoothUnion@Plotter.DistanceField,double",
+        "static": false,
+        "class": "Plotter.DistanceField",
+        "method": "SmoothUnion",
+        "thisName": "distanceField",
+        "params": [
+          {
+            "name": "other",
+            "ds": "Plotter.DistanceField",
+            "cs": "Plotter.DistanceField",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "smoothness",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "5"
+          }
+        ],
+        "returnDs": "Plotter.DistanceField",
+        "returnCs": "Plotter.DistanceField",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.DistanceField.Union": [
+      {
+        "signature": "Plotter.DistanceField.Union@Plotter.DistanceField",
+        "static": false,
+        "class": "Plotter.DistanceField",
+        "method": "Union",
+        "thisName": "distanceField",
+        "params": [
+          {
+            "name": "other",
+            "ds": "Plotter.DistanceField",
+            "cs": "Plotter.DistanceField",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "Plotter.DistanceField",
+        "returnCs": "Plotter.DistanceField",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Drawing.ByLayers": [
+      {
+        "signature": "Plotter.Drawing.ByLayers@Plotter.Layer[],double,double,string",
+        "static": true,
+        "class": "Plotter.Drawing",
+        "method": "ByLayers",
+        "thisName": null,
+        "params": [
+          {
+            "name": "layers",
+            "ds": "Plotter.Layer[]",
+            "cs": "System.Collections.Generic.IList\u003CPlotter.Layer\u003E",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "width",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "297"
+          },
+          {
+            "name": "height",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "210"
+          },
+          {
+            "name": "units",
+            "ds": "string",
+            "cs": "System.String",
+            "hasDefault": true,
+            "default": "\u0022mm\u0022"
+          }
+        ],
+        "returnDs": "Plotter.Drawing",
+        "returnCs": "Plotter.Drawing",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Drawing.ExportSvg": [
+      {
+        "signature": "Plotter.Drawing.ExportSvg@string,int,bool",
+        "static": false,
+        "class": "Plotter.Drawing",
+        "method": "ExportSvg",
+        "thisName": "drawing",
+        "params": [
+          {
+            "name": "filePath",
+            "ds": "string",
+            "cs": "System.String",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "decimals",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "3"
+          },
+          {
+            "name": "includePageOutline",
+            "ds": "bool",
+            "cs": "System.Boolean",
+            "hasDefault": true,
+            "default": "false"
+          }
+        ],
+        "returnDs": "string",
+        "returnCs": "System.String",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Drawing.Optimize": [
+      {
+        "signature": "Plotter.Drawing.Optimize@double",
+        "static": false,
+        "class": "Plotter.Drawing",
+        "method": "Optimize",
+        "thisName": "drawing",
+        "params": [
+          {
+            "name": "joinTolerance",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.01"
+          }
+        ],
+        "returnDs": "Plotter.Drawing",
+        "returnCs": "Plotter.Drawing",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Drawing.Statistics": [
+      {
+        "signature": "Plotter.Drawing.Statistics",
+        "static": false,
+        "class": "Plotter.Drawing",
+        "method": "Statistics",
+        "thisName": "drawing",
+        "params": [],
+        "returnDs": "var",
+        "returnCs": "System.Collections.Generic.Dictionary\u003CSystem.String, System.Object\u003E",
+        "multiReturn": [
+          "layerCount",
+          "pathCount",
+          "drawLength",
+          "travelLength",
+          "outsidePage"
+        ]
+      }
+    ],
+    "Plotter.Drawing.ToSvg": [
+      {
+        "signature": "Plotter.Drawing.ToSvg@int,bool",
+        "static": false,
+        "class": "Plotter.Drawing",
+        "method": "ToSvg",
+        "thisName": "drawing",
+        "params": [
+          {
+            "name": "decimals",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "3"
+          },
+          {
+            "name": "includePageOutline",
+            "ds": "bool",
+            "cs": "System.Boolean",
+            "hasDefault": true,
+            "default": "false"
+          }
+        ],
+        "returnDs": "string",
+        "returnCs": "System.String",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Layer.ByGeometry": [
+      {
+        "signature": "Plotter.Layer.ByGeometry@string,var[]..[],string,double,int",
+        "static": true,
+        "class": "Plotter.Layer",
+        "method": "ByGeometry",
+        "thisName": null,
+        "params": [
+          {
+            "name": "name",
+            "ds": "string",
+            "cs": "System.String",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "geometry",
+            "ds": "var[]..[]",
+            "cs": "System.Collections.Generic.IList\u003CSystem.Object\u003E",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "color",
+            "ds": "string",
+            "cs": "System.String",
+            "hasDefault": true,
+            "default": "\u0022#000000\u0022"
+          },
+          {
+            "name": "strokeWidth",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.35"
+          },
+          {
+            "name": "penNumber",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "1"
+          }
+        ],
+        "returnDs": "Plotter.Layer",
+        "returnCs": "Plotter.Layer",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Layer.Optimize": [
+      {
+        "signature": "Plotter.Layer.Optimize@double",
+        "static": false,
+        "class": "Plotter.Layer",
+        "method": "Optimize",
+        "thisName": "layer",
+        "params": [
+          {
+            "name": "joinTolerance",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.01"
+          }
+        ],
+        "returnDs": "Plotter.Layer",
+        "returnCs": "Plotter.Layer",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Layer.WithAxiDrawOptions": [
+      {
+        "signature": "Plotter.Layer.WithAxiDrawOptions@int,int,int",
+        "static": false,
+        "class": "Plotter.Layer",
+        "method": "WithAxiDrawOptions",
+        "thisName": "layer",
+        "params": [
+          {
+            "name": "penDownSpeed",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "penDownHeight",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "-1"
+          },
+          {
+            "name": "delayMilliseconds",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "0"
+          }
+        ],
+        "returnDs": "Plotter.Layer",
+        "returnCs": "Plotter.Layer",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Noise.Fractal": [
+      {
+        "signature": "Plotter.Noise.Fractal@double,double,int,double,int",
+        "static": true,
+        "class": "Plotter.Noise",
+        "method": "Fractal",
+        "thisName": null,
+        "params": [
+          {
+            "name": "x",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "y",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "octaves",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "3"
+          },
+          {
+            "name": "persistence",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.5"
+          },
+          {
+            "name": "seed",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "0"
+          }
+        ],
+        "returnDs": "double",
+        "returnCs": "System.Double",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Noise.Loop": [
+      {
+        "signature": "Plotter.Noise.Loop@double,double,int",
+        "static": true,
+        "class": "Plotter.Noise",
+        "method": "Loop",
+        "thisName": null,
+        "params": [
+          {
+            "name": "t",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "cycles",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "8"
+          },
+          {
+            "name": "seed",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "0"
+          }
+        ],
+        "returnDs": "double",
+        "returnCs": "System.Double",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Noise.Value": [
+      {
+        "signature": "Plotter.Noise.Value@double,double,int",
+        "static": true,
+        "class": "Plotter.Noise",
+        "method": "Value",
+        "thisName": null,
+        "params": [
+          {
+            "name": "x",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "y",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "seed",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "0"
+          }
+        ],
+        "returnDs": "double",
+        "returnCs": "System.Double",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Page.Fit": [
+      {
+        "signature": "Plotter.Page.Fit@var[]..[],double,double,double,double,bool",
+        "static": true,
+        "class": "Plotter.Page",
+        "method": "Fit",
+        "thisName": null,
+        "params": [
+          {
+            "name": "geometry",
+            "ds": "var[]..[]",
+            "cs": "System.Collections.Generic.IList\u003CSystem.Object\u003E",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "minX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "10"
+          },
+          {
+            "name": "minY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "10"
+          },
+          {
+            "name": "maxX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "287"
+          },
+          {
+            "name": "maxY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "200"
+          },
+          {
+            "name": "uniform",
+            "ds": "bool",
+            "cs": "System.Boolean",
+            "hasDefault": true,
+            "default": "true"
+          }
+        ],
+        "returnDs": "var[]..[]",
+        "returnCs": "System.Collections.Generic.IList\u003CSystem.Object\u003E",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Page.Region": [
+      {
+        "signature": "Plotter.Page.Region@double,double,double",
+        "static": true,
+        "class": "Plotter.Page",
+        "method": "Region",
+        "thisName": null,
+        "params": [
+          {
+            "name": "width",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "297"
+          },
+          {
+            "name": "height",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "210"
+          },
+          {
+            "name": "margin",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "10"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Page.Size": [
+      {
+        "signature": "Plotter.Page.Size@string,bool",
+        "static": true,
+        "class": "Plotter.Page",
+        "method": "Size",
+        "thisName": null,
+        "params": [
+          {
+            "name": "name",
+            "ds": "string",
+            "cs": "System.String",
+            "hasDefault": true,
+            "default": "\u0022A4\u0022"
+          },
+          {
+            "name": "landscape",
+            "ds": "bool",
+            "cs": "System.Boolean",
+            "hasDefault": true,
+            "default": "true"
+          }
+        ],
+        "returnDs": "var",
+        "returnCs": "System.Collections.Generic.Dictionary\u003CSystem.String, System.Object\u003E",
+        "multiReturn": [
+          "width",
+          "height"
+        ]
+      }
+    ],
+    "Plotter.Pattern.Circles": [
+      {
+        "signature": "Plotter.Pattern.Circles@Plotter.Shape,double,double,double,int,double,int,Plotter.Shape,double,int",
+        "static": true,
+        "class": "Plotter.Pattern",
+        "method": "Circles",
+        "thisName": null,
+        "params": [
+          {
+            "name": "region",
+            "ds": "Plotter.Shape",
+            "cs": "Plotter.Shape",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "minRadius",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "4"
+          },
+          {
+            "name": "maxRadius",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "12"
+          },
+          {
+            "name": "spacing",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "2"
+          },
+          {
+            "name": "rings",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "3"
+          },
+          {
+            "name": "ringGap",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "2"
+          },
+          {
+            "name": "seed",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "avoid",
+            "ds": "Plotter.Shape",
+            "cs": "Plotter.Shape",
+            "hasDefault": true,
+            "default": null
+          },
+          {
+            "name": "avoidMargin",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "attempts",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "3000"
+          }
+        ],
+        "returnDs": "Plotter.Shape[][]",
+        "returnCs": "System.Collections.Generic.IList\u003CSystem.Collections.Generic.IList\u003CPlotter.Shape\u003E\u003E",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Pattern.Grid": [
+      {
+        "signature": "Plotter.Pattern.Grid@Plotter.Shape,double,double,double,int,double,string,double,int,Plotter.Shape,double",
+        "static": true,
+        "class": "Plotter.Pattern",
+        "method": "Grid",
+        "thisName": null,
+        "params": [
+          {
+            "name": "region",
+            "ds": "Plotter.Shape",
+            "cs": "Plotter.Shape",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "cellWidth",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "12"
+          },
+          {
+            "name": "cellHeight",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "12"
+          },
+          {
+            "name": "gap",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "2"
+          },
+          {
+            "name": "rings",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "2"
+          },
+          {
+            "name": "ringGap",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "2"
+          },
+          {
+            "name": "innerShape",
+            "ds": "string",
+            "cs": "System.String",
+            "hasDefault": true,
+            "default": "\u0022rectangle\u0022"
+          },
+          {
+            "name": "jitter",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.5"
+          },
+          {
+            "name": "seed",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "avoid",
+            "ds": "Plotter.Shape",
+            "cs": "Plotter.Shape",
+            "hasDefault": true,
+            "default": null
+          },
+          {
+            "name": "avoidMargin",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          }
+        ],
+        "returnDs": "Plotter.Shape[][]",
+        "returnCs": "System.Collections.Generic.IList\u003CSystem.Collections.Generic.IList\u003CPlotter.Shape\u003E\u003E",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Pattern.NestedRectangles": [
+      {
+        "signature": "Plotter.Pattern.NestedRectangles@Plotter.Shape,double,double,double,double,int,int,double,int,Plotter.Shape,double",
+        "static": true,
+        "class": "Plotter.Pattern",
+        "method": "NestedRectangles",
+        "thisName": null,
+        "params": [
+          {
+            "name": "region",
+            "ds": "Plotter.Shape",
+            "cs": "Plotter.Shape",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "minCell",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "15"
+          },
+          {
+            "name": "maxCell",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "45"
+          },
+          {
+            "name": "gap",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "3"
+          },
+          {
+            "name": "ringGap",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "3"
+          },
+          {
+            "name": "minRings",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "2"
+          },
+          {
+            "name": "maxRings",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "5"
+          },
+          {
+            "name": "jitter",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "1"
+          },
+          {
+            "name": "seed",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "avoid",
+            "ds": "Plotter.Shape",
+            "cs": "Plotter.Shape",
+            "hasDefault": true,
+            "default": null
+          },
+          {
+            "name": "avoidMargin",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          }
+        ],
+        "returnDs": "Plotter.Shape[][]",
+        "returnCs": "System.Collections.Generic.IList\u003CSystem.Collections.Generic.IList\u003CPlotter.Shape\u003E\u003E",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Pattern.SelectRings": [
+      {
+        "signature": "Plotter.Pattern.SelectRings@Plotter.Shape[][],int,int,bool",
+        "static": true,
+        "class": "Plotter.Pattern",
+        "method": "SelectRings",
+        "thisName": null,
+        "params": [
+          {
+            "name": "cells",
+            "ds": "Plotter.Shape[][]",
+            "cs": "System.Collections.Generic.IList\u003CSystem.Collections.Generic.IList\u003CPlotter.Shape\u003E\u003E",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "start",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "step",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "2"
+          },
+          {
+            "name": "fromInside",
+            "ds": "bool",
+            "cs": "System.Boolean",
+            "hasDefault": true,
+            "default": "false"
+          }
+        ],
+        "returnDs": "Plotter.Shape[]",
+        "returnCs": "System.Collections.Generic.IList\u003CPlotter.Shape\u003E",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Pattern.Spirals": [
+      {
+        "signature": "Plotter.Pattern.Spirals@Plotter.Shape,double,double,double,double,int,Plotter.Shape,double,int",
+        "static": true,
+        "class": "Plotter.Pattern",
+        "method": "Spirals",
+        "thisName": null,
+        "params": [
+          {
+            "name": "region",
+            "ds": "Plotter.Shape",
+            "cs": "Plotter.Shape",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "minRadius",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "8"
+          },
+          {
+            "name": "maxRadius",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "25"
+          },
+          {
+            "name": "turns",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "2.5"
+          },
+          {
+            "name": "spacing",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "3"
+          },
+          {
+            "name": "seed",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "avoid",
+            "ds": "Plotter.Shape",
+            "cs": "Plotter.Shape",
+            "hasDefault": true,
+            "default": null
+          },
+          {
+            "name": "avoidMargin",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "attempts",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "2000"
+          }
+        ],
+        "returnDs": "Plotter.Polyline[]",
+        "returnCs": "System.Collections.Generic.IList\u003CPlotter.Polyline\u003E",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Arc": [
+      {
+        "signature": "Plotter.Polyline.Arc@double,double,double,double,double,int",
+        "static": true,
+        "class": "Plotter.Polyline",
+        "method": "Arc",
+        "thisName": null,
+        "params": [
+          {
+            "name": "centerX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "centerY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "radius",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "startAngle",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "endAngle",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "90"
+          },
+          {
+            "name": "segments",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "32"
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Bounds": [
+      {
+        "signature": "Plotter.Polyline.Bounds",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "Bounds",
+        "thisName": "polyline",
+        "params": [],
+        "returnDs": "var",
+        "returnCs": "System.Collections.Generic.Dictionary\u003CSystem.String, System.Object\u003E",
+        "multiReturn": [
+          "minX",
+          "minY",
+          "maxX",
+          "maxY"
+        ]
+      }
+    ],
+    "Plotter.Polyline.ByCoordinates": [
+      {
+        "signature": "Plotter.Polyline.ByCoordinates@double[],double[],bool",
+        "static": true,
+        "class": "Plotter.Polyline",
+        "method": "ByCoordinates",
+        "thisName": null,
+        "params": [
+          {
+            "name": "x",
+            "ds": "double[]",
+            "cs": "System.Collections.Generic.IList\u003CSystem.Double\u003E",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "y",
+            "ds": "double[]",
+            "cs": "System.Collections.Generic.IList\u003CSystem.Double\u003E",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "closed",
+            "ds": "bool",
+            "cs": "System.Boolean",
+            "hasDefault": true,
+            "default": "false"
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.ByCurve": [
+      {
+        "signature": "Plotter.Polyline.ByCurve@Autodesk.DesignScript.Geometry.Curve,double",
+        "static": true,
+        "class": "Plotter.Polyline",
+        "method": "ByCurve",
+        "thisName": null,
+        "params": [
+          {
+            "name": "curve",
+            "ds": "Autodesk.DesignScript.Geometry.Curve",
+            "cs": "Autodesk.DesignScript.Geometry.Curve",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "segmentLength",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.5"
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.ByPoints": [
+      {
+        "signature": "Plotter.Polyline.ByPoints@Autodesk.DesignScript.Geometry.Point[],bool",
+        "static": true,
+        "class": "Plotter.Polyline",
+        "method": "ByPoints",
+        "thisName": null,
+        "params": [
+          {
+            "name": "points",
+            "ds": "Autodesk.DesignScript.Geometry.Point[]",
+            "cs": "System.Collections.Generic.IList\u003CAutodesk.DesignScript.Geometry.Point\u003E",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "closed",
+            "ds": "bool",
+            "cs": "System.Boolean",
+            "hasDefault": true,
+            "default": "false"
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Close": [
+      {
+        "signature": "Plotter.Polyline.Close",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "Close",
+        "thisName": "polyline",
+        "params": [],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Join": [
+      {
+        "signature": "Plotter.Polyline.Join@Plotter.Polyline[],double",
+        "static": true,
+        "class": "Plotter.Polyline",
+        "method": "Join",
+        "thisName": null,
+        "params": [
+          {
+            "name": "polylines",
+            "ds": "Plotter.Polyline[]",
+            "cs": "System.Collections.Generic.IList\u003CPlotter.Polyline\u003E",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "tolerance",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.01"
+          }
+        ],
+        "returnDs": "Plotter.Polyline[]",
+        "returnCs": "System.Collections.Generic.IList\u003CPlotter.Polyline\u003E",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Line": [
+      {
+        "signature": "Plotter.Polyline.Line@double,double,double,double",
+        "static": true,
+        "class": "Plotter.Polyline",
+        "method": "Line",
+        "thisName": null,
+        "params": [
+          {
+            "name": "x1",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "y1",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "x2",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "y2",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Open": [
+      {
+        "signature": "Plotter.Polyline.Open",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "Open",
+        "thisName": "polyline",
+        "params": [],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Outline": [
+      {
+        "signature": "Plotter.Polyline.Outline@double,double",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "Outline",
+        "thisName": "polyline",
+        "params": [
+          {
+            "name": "width",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "2"
+          },
+          {
+            "name": "resolution",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.25"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.PointAtParameter": [
+      {
+        "signature": "Plotter.Polyline.PointAtParameter@double",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "PointAtParameter",
+        "thisName": "polyline",
+        "params": [
+          {
+            "name": "parameter",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.5"
+          }
+        ],
+        "returnDs": "var",
+        "returnCs": "System.Collections.Generic.Dictionary\u003CSystem.String, System.Object\u003E",
+        "multiReturn": [
+          "x",
+          "y"
+        ]
+      }
+    ],
+    "Plotter.Polyline.Resample": [
+      {
+        "signature": "Plotter.Polyline.Resample@double",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "Resample",
+        "thisName": "polyline",
+        "params": [
+          {
+            "name": "spacing",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "1"
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Reverse": [
+      {
+        "signature": "Plotter.Polyline.Reverse",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "Reverse",
+        "thisName": "polyline",
+        "params": [],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Rotate": [
+      {
+        "signature": "Plotter.Polyline.Rotate@double,double,double",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "Rotate",
+        "thisName": "polyline",
+        "params": [
+          {
+            "name": "angle",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "centerX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "centerY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Scale": [
+      {
+        "signature": "Plotter.Polyline.Scale@double,double,double",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "Scale",
+        "thisName": "polyline",
+        "params": [
+          {
+            "name": "factor",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "centerX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "centerY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Scallop": [
+      {
+        "signature": "Plotter.Polyline.Scallop@double,double,bool",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "Scallop",
+        "thisName": "polyline",
+        "params": [
+          {
+            "name": "amplitude",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "3"
+          },
+          {
+            "name": "wavelength",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "15"
+          },
+          {
+            "name": "scallop",
+            "ds": "bool",
+            "cs": "System.Boolean",
+            "hasDefault": true,
+            "default": "true"
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Simplify": [
+      {
+        "signature": "Plotter.Polyline.Simplify@double",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "Simplify",
+        "thisName": "polyline",
+        "params": [
+          {
+            "name": "tolerance",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.05"
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Smooth": [
+      {
+        "signature": "Plotter.Polyline.Smooth@int,double",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "Smooth",
+        "thisName": "polyline",
+        "params": [
+          {
+            "name": "iterations",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "1"
+          },
+          {
+            "name": "ratio",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.25"
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Spiral": [
+      {
+        "signature": "Plotter.Polyline.Spiral@double,double,double,double,double,double,int",
+        "static": true,
+        "class": "Plotter.Polyline",
+        "method": "Spiral",
+        "thisName": null,
+        "params": [
+          {
+            "name": "centerX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "centerY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "startRadius",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "endRadius",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "20"
+          },
+          {
+            "name": "turns",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "3"
+          },
+          {
+            "name": "startAngle",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "segmentsPerTurn",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "48"
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.ToPolyCurve": [
+      {
+        "signature": "Plotter.Polyline.ToPolyCurve",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "ToPolyCurve",
+        "thisName": "polyline",
+        "params": [],
+        "returnDs": "Autodesk.DesignScript.Geometry.PolyCurve",
+        "returnCs": "Autodesk.DesignScript.Geometry.PolyCurve",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Translate": [
+      {
+        "signature": "Plotter.Polyline.Translate@double,double",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "Translate",
+        "thisName": "polyline",
+        "params": [
+          {
+            "name": "dx",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "dy",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Wave": [
+      {
+        "signature": "Plotter.Polyline.Wave@double,double,double,double,double,int",
+        "static": true,
+        "class": "Plotter.Polyline",
+        "method": "Wave",
+        "thisName": null,
+        "params": [
+          {
+            "name": "startX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "startY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "length",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "100"
+          },
+          {
+            "name": "amplitude",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "5"
+          },
+          {
+            "name": "wavelength",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "20"
+          },
+          {
+            "name": "segmentsPerWave",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "24"
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Polyline.Wobble": [
+      {
+        "signature": "Plotter.Polyline.Wobble@double,double,int,int",
+        "static": false,
+        "class": "Plotter.Polyline",
+        "method": "Wobble",
+        "thisName": "polyline",
+        "params": [
+          {
+            "name": "amplitude",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.5"
+          },
+          {
+            "name": "wavelength",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "10"
+          },
+          {
+            "name": "seed",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "octaves",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "2"
+          }
+        ],
+        "returnDs": "Plotter.Polyline",
+        "returnCs": "Plotter.Polyline",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Bounds": [
+      {
+        "signature": "Plotter.Shape.Bounds",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Bounds",
+        "thisName": "shape",
+        "params": [],
+        "returnDs": "var",
+        "returnCs": "System.Collections.Generic.Dictionary\u003CSystem.String, System.Object\u003E",
+        "multiReturn": [
+          "minX",
+          "minY",
+          "maxX",
+          "maxY"
+        ]
+      }
+    ],
+    "Plotter.Shape.ByBounds": [
+      {
+        "signature": "Plotter.Shape.ByBounds@double,double,double,double",
+        "static": true,
+        "class": "Plotter.Shape",
+        "method": "ByBounds",
+        "thisName": null,
+        "params": [
+          {
+            "name": "minX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "minY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "maxX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "maxY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.ByCoordinates": [
+      {
+        "signature": "Plotter.Shape.ByCoordinates@double[],double[]",
+        "static": true,
+        "class": "Plotter.Shape",
+        "method": "ByCoordinates",
+        "thisName": null,
+        "params": [
+          {
+            "name": "x",
+            "ds": "double[]",
+            "cs": "System.Collections.Generic.IList\u003CSystem.Double\u003E",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "y",
+            "ds": "double[]",
+            "cs": "System.Collections.Generic.IList\u003CSystem.Double\u003E",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.ByCurves": [
+      {
+        "signature": "Plotter.Shape.ByCurves@Autodesk.DesignScript.Geometry.Curve[],double,double",
+        "static": true,
+        "class": "Plotter.Shape",
+        "method": "ByCurves",
+        "thisName": null,
+        "params": [
+          {
+            "name": "curves",
+            "ds": "Autodesk.DesignScript.Geometry.Curve[]",
+            "cs": "System.Collections.Generic.IList\u003CAutodesk.DesignScript.Geometry.Curve\u003E",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "segmentLength",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.5"
+          },
+          {
+            "name": "joinTolerance",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.01"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.ByPoints": [
+      {
+        "signature": "Plotter.Shape.ByPoints@Autodesk.DesignScript.Geometry.Point[][]",
+        "static": true,
+        "class": "Plotter.Shape",
+        "method": "ByPoints",
+        "thisName": null,
+        "params": [
+          {
+            "name": "loops",
+            "ds": "Autodesk.DesignScript.Geometry.Point[][]",
+            "cs": "System.Collections.Generic.IList\u003CSystem.Collections.Generic.IList\u003CAutodesk.DesignScript.Geometry.Point\u003E\u003E",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.ByPolylines": [
+      {
+        "signature": "Plotter.Shape.ByPolylines@Plotter.Polyline[]",
+        "static": true,
+        "class": "Plotter.Shape",
+        "method": "ByPolylines",
+        "thisName": null,
+        "params": [
+          {
+            "name": "loops",
+            "ds": "Plotter.Polyline[]",
+            "cs": "System.Collections.Generic.IList\u003CPlotter.Polyline\u003E",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Center": [
+      {
+        "signature": "Plotter.Shape.Center",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Center",
+        "thisName": "shape",
+        "params": [],
+        "returnDs": "var",
+        "returnCs": "System.Collections.Generic.Dictionary\u003CSystem.String, System.Object\u003E",
+        "multiReturn": [
+          "x",
+          "y"
+        ]
+      }
+    ],
+    "Plotter.Shape.Circle": [
+      {
+        "signature": "Plotter.Shape.Circle@double,double,double,int",
+        "static": true,
+        "class": "Plotter.Shape",
+        "method": "Circle",
+        "thisName": null,
+        "params": [
+          {
+            "name": "centerX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "centerY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "radius",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "10"
+          },
+          {
+            "name": "segments",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "64"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Clip": [
+      {
+        "signature": "Plotter.Shape.Clip@var[]..[],bool,double,double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Clip",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "geometry",
+            "ds": "var[]..[]",
+            "cs": "System.Collections.Generic.IList\u003CSystem.Object\u003E",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "keepInside",
+            "ds": "bool",
+            "cs": "System.Boolean",
+            "hasDefault": true,
+            "default": "false"
+          },
+          {
+            "name": "margin",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "resolution",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.25"
+          }
+        ],
+        "returnDs": "Plotter.Polyline[]",
+        "returnCs": "System.Collections.Generic.IList\u003CPlotter.Polyline\u003E",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Combine": [
+      {
+        "signature": "Plotter.Shape.Combine@Plotter.Shape[]",
+        "static": true,
+        "class": "Plotter.Shape",
+        "method": "Combine",
+        "thisName": null,
+        "params": [
+          {
+            "name": "shapes",
+            "ds": "Plotter.Shape[]",
+            "cs": "System.Collections.Generic.IList\u003CPlotter.Shape\u003E",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Contains": [
+      {
+        "signature": "Plotter.Shape.Contains@double,double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Contains",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "x",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "y",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "bool",
+        "returnCs": "System.Boolean",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Difference": [
+      {
+        "signature": "Plotter.Shape.Difference@Plotter.Shape,double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Difference",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "other",
+            "ds": "Plotter.Shape",
+            "cs": "Plotter.Shape",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "resolution",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.25"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Ellipse": [
+      {
+        "signature": "Plotter.Shape.Ellipse@double,double,double,double,double,int",
+        "static": true,
+        "class": "Plotter.Shape",
+        "method": "Ellipse",
+        "thisName": null,
+        "params": [
+          {
+            "name": "centerX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "centerY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "radiusX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "10"
+          },
+          {
+            "name": "radiusY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "6"
+          },
+          {
+            "name": "rotation",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "segments",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "64"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.FillHoles": [
+      {
+        "signature": "Plotter.Shape.FillHoles",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "FillHoles",
+        "thisName": "shape",
+        "params": [],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Hatch": [
+      {
+        "signature": "Plotter.Shape.Hatch@double,double,double,double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Hatch",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "spacing",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "2"
+          },
+          {
+            "name": "angle",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "45"
+          },
+          {
+            "name": "inset",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "offset",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          }
+        ],
+        "returnDs": "Plotter.Polyline[]",
+        "returnCs": "System.Collections.Generic.IList\u003CPlotter.Polyline\u003E",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.HolesOnly": [
+      {
+        "signature": "Plotter.Shape.HolesOnly",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "HolesOnly",
+        "thisName": "shape",
+        "params": [],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.InnerRings": [
+      {
+        "signature": "Plotter.Shape.InnerRings@double,double,int,double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "InnerRings",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "spacing",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "2"
+          },
+          {
+            "name": "firstOffset",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "2"
+          },
+          {
+            "name": "maxCount",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "50"
+          },
+          {
+            "name": "resolution",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.25"
+          }
+        ],
+        "returnDs": "Plotter.Shape[]",
+        "returnCs": "System.Collections.Generic.IList\u003CPlotter.Shape\u003E",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Intersection": [
+      {
+        "signature": "Plotter.Shape.Intersection@Plotter.Shape,double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Intersection",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "other",
+            "ds": "Plotter.Shape",
+            "cs": "Plotter.Shape",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "resolution",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.25"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Offset": [
+      {
+        "signature": "Plotter.Shape.Offset@double,double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Offset",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "distance",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "2"
+          },
+          {
+            "name": "resolution",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.25"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Rectangle": [
+      {
+        "signature": "Plotter.Shape.Rectangle@double,double,double,double,double,double",
+        "static": true,
+        "class": "Plotter.Shape",
+        "method": "Rectangle",
+        "thisName": null,
+        "params": [
+          {
+            "name": "centerX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "centerY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "width",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "20"
+          },
+          {
+            "name": "height",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "20"
+          },
+          {
+            "name": "cornerRadius",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "rotation",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.RegularPolygon": [
+      {
+        "signature": "Plotter.Shape.RegularPolygon@double,double,double,int,double",
+        "static": true,
+        "class": "Plotter.Shape",
+        "method": "RegularPolygon",
+        "thisName": null,
+        "params": [
+          {
+            "name": "centerX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "centerY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "radius",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "10"
+          },
+          {
+            "name": "sides",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "6"
+          },
+          {
+            "name": "rotation",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Resample": [
+      {
+        "signature": "Plotter.Shape.Resample@double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Resample",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "spacing",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "1"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Rings": [
+      {
+        "signature": "Plotter.Shape.Rings@int,double,double,double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Rings",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "count",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "5"
+          },
+          {
+            "name": "spacing",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "3"
+          },
+          {
+            "name": "firstOffset",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "3"
+          },
+          {
+            "name": "resolution",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.25"
+          }
+        ],
+        "returnDs": "Plotter.Shape[]",
+        "returnCs": "System.Collections.Generic.IList\u003CPlotter.Shape\u003E",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Rotate": [
+      {
+        "signature": "Plotter.Shape.Rotate@double,double,double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Rotate",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "angle",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "centerX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "centerY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Scale": [
+      {
+        "signature": "Plotter.Shape.Scale@double,double,double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Scale",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "factor",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "centerX",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "centerY",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Scallop": [
+      {
+        "signature": "Plotter.Shape.Scallop@double,double,bool",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Scallop",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "amplitude",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "3"
+          },
+          {
+            "name": "wavelength",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "15"
+          },
+          {
+            "name": "scallop",
+            "ds": "bool",
+            "cs": "System.Boolean",
+            "hasDefault": true,
+            "default": "true"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.SignedDistance": [
+      {
+        "signature": "Plotter.Shape.SignedDistance@double,double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "SignedDistance",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "x",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "y",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "double",
+        "returnCs": "System.Double",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Simplify": [
+      {
+        "signature": "Plotter.Shape.Simplify@double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Simplify",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "tolerance",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.05"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Smooth": [
+      {
+        "signature": "Plotter.Shape.Smooth@int,double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Smooth",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "iterations",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "1"
+          },
+          {
+            "name": "ratio",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.25"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.ToPolyCurves": [
+      {
+        "signature": "Plotter.Shape.ToPolyCurves",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "ToPolyCurves",
+        "thisName": "shape",
+        "params": [],
+        "returnDs": "Autodesk.DesignScript.Geometry.PolyCurve[]",
+        "returnCs": "System.Collections.Generic.IList\u003CAutodesk.DesignScript.Geometry.PolyCurve\u003E",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Translate": [
+      {
+        "signature": "Plotter.Shape.Translate@double,double",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Translate",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "dx",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "dy",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": false,
+            "default": null
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Union": [
+      {
+        "signature": "Plotter.Shape.Union@Plotter.Shape[],double",
+        "static": true,
+        "class": "Plotter.Shape",
+        "method": "Union",
+        "thisName": null,
+        "params": [
+          {
+            "name": "shapes",
+            "ds": "Plotter.Shape[]",
+            "cs": "System.Collections.Generic.IList\u003CPlotter.Shape\u003E",
+            "hasDefault": false,
+            "default": null
+          },
+          {
+            "name": "resolution",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.25"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ],
+    "Plotter.Shape.Wobble": [
+      {
+        "signature": "Plotter.Shape.Wobble@double,double,int,int",
+        "static": false,
+        "class": "Plotter.Shape",
+        "method": "Wobble",
+        "thisName": "shape",
+        "params": [
+          {
+            "name": "amplitude",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "0.5"
+          },
+          {
+            "name": "wavelength",
+            "ds": "double",
+            "cs": "System.Double",
+            "hasDefault": true,
+            "default": "10"
+          },
+          {
+            "name": "seed",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "0"
+          },
+          {
+            "name": "octaves",
+            "ds": "int",
+            "cs": "System.Int32",
+            "hasDefault": true,
+            "default": "2"
+          }
+        ],
+        "returnDs": "Plotter.Shape",
+        "returnCs": "Plotter.Shape",
+        "multiReturn": null
+      }
+    ]
+  }
+}
