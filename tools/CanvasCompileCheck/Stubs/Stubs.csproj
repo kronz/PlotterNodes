@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- API stubs for the Linux compile check of PlotterNodes.Canvas. Never shipped. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>CanvasApiStubs</AssemblyName>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS0067;CS0108;CS0114;CS0169;CS0414;CS0649;CS1591;CS8625</NoWarn>
+  </PropertyGroup>
+</Project>

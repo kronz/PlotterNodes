@@ -10,3 +10,5 @@ tests/make2d/results/
 tests/make2d/expected/
 tests/make2d/__pycache__/
 tools/hlr_prototype/out/
+__pycache__/
+*.pyc

@@ -1,6 +1,7 @@
 <#
 .SYNOPSIS
-  Builds the PlotterNodes zero-touch library and assembles the Dynamo package folder.
+  Builds the PlotterNodes zero-touch library and the Canvas 3D node (PlotterNodes.Canvas) and
+  assembles the Dynamo package folder.
 
 .DESCRIPTION
   Three ways to reference Dynamo, in order of preference for a Dynamo 4.x built from source:
@@ -12,6 +13,9 @@
 
   Add -Install to copy the assembled package into %APPDATA%\Dynamo\Dynamo Core\<version>\packages.
   Use -DotNet net8.0 for Dynamo 3.x hosts (and -DynamoNuGetVersion 3.4.2.7731 in NuGet mode).
+
+  The Canvas 3D node (src\PlotterNodes.Canvas, WPF + HelixToolkit) builds in the -DynamoBinDir and
+  NuGet modes; -SkipCanvas leaves it out. Smoke and Make2DTests never build it.
 
 .EXAMPLE
   .\build.ps1 -DynamoBinDir D:\Drawing\Dynamo\bin\AnyCPU\Debug -Install
@@ -27,12 +31,14 @@ param(
     [switch]$Make2DTests,
     [string[]]$Only = @(),
     [switch]$Install,
-    [string]$PackagesDir = ""
+    [string]$PackagesDir = "",
+    [switch]$SkipCanvas
 )
 
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $proj = Join-Path $root "src\PlotterNodes\PlotterNodes.csproj"
+$canvasProj = Join-Path $root "src\PlotterNodes.Canvas\PlotterNodes.Canvas.csproj"
 $packageDir = Join-Path $root "package\PlotterNodes"
 
 if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) {
@@ -118,11 +124,36 @@ if ($DynamoBinDir) {
 & dotnet build $proj @props
 if ($LASTEXITCODE -ne 0) { throw "Build failed." }
 
-# Safety: a Dynamo package must never ship Dynamo's own assemblies.
-foreach ($forbidden in @("DynamoServices.dll", "ProtoGeometry.dll", "DynamoCore.dll", "DynamoUnits.dll")) {
+# Canvas 3D node: NodeModel + WPF view customization, references DynamoCoreWpf and HelixToolkit.
+if (-not $SkipCanvas) {
+    $canvasProps = @("-c", $Configuration, "-p:DotNet=$DotNet")
+    if ($DynamoNuGetVersion) { $canvasProps += "-p:DynamoNuGetVersion=$DynamoNuGetVersion" }
+    $buildCanvas = $true
+    if ($DynamoBinDir) {
+        foreach ($needed in @("DynamoCoreWpf.dll", "HelixToolkit.SharpDX.Core.Wpf.dll", "SharpDX.D3DCompiler.dll")) {
+            if (-not (Test-Path (Join-Path $DynamoBinDir $needed))) {
+                Write-Warning "$needed not found in $DynamoBinDir; skipping the Canvas 3D node. Build Dynamo.All.sln (not only DynamoCore.sln) or use NuGet mode."
+                $buildCanvas = $false
+            }
+        }
+        $canvasProps += "-p:DynamoBinDir=$DynamoBinDir"
+    }
+    if ($buildCanvas) {
+        Write-Host "Building the Canvas 3D node (PlotterNodes.Canvas)" -ForegroundColor Cyan
+        & dotnet build $canvasProj @canvasProps
+        if ($LASTEXITCODE -ne 0) { throw "Canvas 3D build failed. Use -SkipCanvas to build PlotterNodes alone." }
+    }
+}
+
+# Safety: a Dynamo package must never ship Dynamo's own assemblies (or Helix/SharpDX, which Dynamo loads).
+$forbiddenList = @("DynamoServices.dll", "ProtoGeometry.dll", "DynamoCore.dll", "DynamoUnits.dll", "DynamoCoreWpf.dll", "DynamoUtilities.dll", "ProtoCore.dll", "Newtonsoft.Json.dll")
+foreach ($forbidden in $forbiddenList) {
     $f = Join-Path $packageDir "bin\$forbidden"
     if (Test-Path $f) { Remove-Item $f -Force; Write-Warning "Removed $forbidden from the package bin folder." }
 }
+Get-ChildItem (Join-Path $packageDir "bin") -Filter "*.dll" -ErrorAction SilentlyContinue |
+    Where-Object { $_.Name -like "HelixToolkit*.dll" -or $_.Name -like "SharpDX*.dll" } |
+    ForEach-Object { Remove-Item $_.FullName -Force; Write-Warning "Removed $($_.Name) from the package bin folder." }
 
 Write-Host "Package assembled at $packageDir" -ForegroundColor Green
 

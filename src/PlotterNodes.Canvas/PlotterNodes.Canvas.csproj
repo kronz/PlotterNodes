@@ -1,0 +1,101 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    PlotterNodes.Canvas: the Canvas 3D node (Plotter > View > Canvas 3D).
+
+    A NodeModel with a WPF view customization: everything wired into the node is shown in a
+    separate 3D window that can live on another monitor, in Dynamo shading or in Arctic
+    display (white materials, sky-light soft shadows and ambient occlusion). It ships in the
+    PlotterNodes package next to PlotterNodes.dll and is listed in pkg.json node_libraries.
+
+    Reference modes (same switches as PlotterNodes.csproj; build.ps1 passes them through):
+      1. NuGet (default)      dotnet build -c Release
+                              -> DynamoVisualProgramming.WpfUILibrary $(DynamoNuGetVersion) + HelixToolkit 2.24.0
+      2. Local Dynamo build   dotnet build -c Release -p:DynamoBinDir=<Dynamo bin folder>
+                              -> DynamoCore/DynamoCoreWpf/HelixToolkit/SharpDX DLLs from that folder
+
+    Nothing from Dynamo, Helix or SharpDX is copied into the package: Dynamo already loads them.
+    Shaders are HLSL sources embedded in the DLL and compiled at run time with d3dcompiler_47
+    (part of Windows), so no Windows SDK / fxc is needed to build.
+  -->
+
+  <PropertyGroup>
+    <DotNet Condition="'$(DotNet)' == ''">net10.0</DotNet>
+    <TargetFramework>$(DotNet)-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>PlotterNodes.Canvas</AssemblyName>
+    <RootNamespace>Plotter.Canvas</RootNamespace>
+    <Version>0.1.0</Version>
+    <Authors>Zach Kron</Authors>
+    <Description>Canvas 3D node for Dynamo: a separate 3D window for the geometry wired into it, with Dynamo shading or Arctic ambient occlusion display.</Description>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- CS1591: internal-facing types carry summaries where it matters.
+         CS0618: Dynamo marks HelixWatch3DViewModel, DynamoEffectsManager and DynamoGeometryModel3D
+         [Obsolete("will be moved")]; they are still the supported way to build a Watch3D-style view. -->
+    <NoWarn>$(NoWarn);CS1591;CS0618;CS0672</NoWarn>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <Deterministic>true</Deterministic>
+    <DynamoNuGetVersion Condition="'$(DynamoNuGetVersion)' == ''">4.2.1.5887</DynamoNuGetVersion>
+    <HelixVersion Condition="'$(HelixVersion)' == ''">2.24.0</HelixVersion>
+    <SharpDXVersion Condition="'$(SharpDXVersion)' == ''">4.2.0</SharpDXVersion>
+  </PropertyGroup>
+
+  <!-- Mode 1: NuGet. Versions match D:\Drawing\Dynamo\Directory.Packages.props (Helix 2.24.0, SharpDX 4.2.0). -->
+  <ItemGroup Condition="'$(DynamoBinDir)' == ''">
+    <PackageReference Include="DynamoVisualProgramming.WpfUILibrary" Version="$(DynamoNuGetVersion)" ExcludeAssets="runtime" PrivateAssets="all" />
+    <PackageReference Include="HelixToolkit.SharpDX.Core.Wpf" Version="$(HelixVersion)" ExcludeAssets="runtime" PrivateAssets="all" />
+    <PackageReference Include="SharpDX" Version="$(SharpDXVersion)" ExcludeAssets="runtime" PrivateAssets="all" />
+    <PackageReference Include="SharpDX.D3DCompiler" Version="$(SharpDXVersion)" ExcludeAssets="runtime" PrivateAssets="all" />
+    <PackageReference Include="SharpDX.Direct3D11" Version="$(SharpDXVersion)" ExcludeAssets="runtime" PrivateAssets="all" />
+    <PackageReference Include="SharpDX.DXGI" Version="$(SharpDXVersion)" ExcludeAssets="runtime" PrivateAssets="all" />
+    <PackageReference Include="SharpDX.Mathematics" Version="$(SharpDXVersion)" ExcludeAssets="runtime" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Mode 2: a local Dynamo build or install folder. Private=false: never copy Dynamo DLLs next to the package. -->
+  <ItemGroup Condition="'$(DynamoBinDir)' != ''">
+    <Reference Include="DynamoCore"><HintPath>$(DynamoBinDir)\DynamoCore.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="DynamoCoreWpf"><HintPath>$(DynamoBinDir)\DynamoCoreWpf.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="DynamoServices"><HintPath>$(DynamoBinDir)\DynamoServices.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="DynamoUtilities"><HintPath>$(DynamoBinDir)\DynamoUtilities.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="ProtoCore"><HintPath>$(DynamoBinDir)\ProtoCore.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Newtonsoft.Json"><HintPath>$(DynamoBinDir)\Newtonsoft.Json.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="HelixToolkit" Condition="Exists('$(DynamoBinDir)\HelixToolkit.dll')"><HintPath>$(DynamoBinDir)\HelixToolkit.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="HelixToolkit.SharpDX.Core"><HintPath>$(DynamoBinDir)\HelixToolkit.SharpDX.Core.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="HelixToolkit.SharpDX.Core.Wpf"><HintPath>$(DynamoBinDir)\HelixToolkit.SharpDX.Core.Wpf.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="SharpDX"><HintPath>$(DynamoBinDir)\SharpDX.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="SharpDX.D3DCompiler"><HintPath>$(DynamoBinDir)\SharpDX.D3DCompiler.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="SharpDX.Direct3D11"><HintPath>$(DynamoBinDir)\SharpDX.Direct3D11.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="SharpDX.DXGI"><HintPath>$(DynamoBinDir)\SharpDX.DXGI.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="SharpDX.Mathematics"><HintPath>$(DynamoBinDir)\SharpDX.Mathematics.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+  <!-- HLSL sources, compiled at run time (Rendering/ShaderLibrary.cs). Logical names: PlotterNodes.Canvas.Shaders.<file>. -->
+  <ItemGroup>
+    <EmbeddedResource Include="Shaders\**\*.hlsl;Shaders\**\*.hlsli">
+      <LogicalName>PlotterNodes.Canvas.Shaders.%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <!-- Package layout: this DLL joins PlotterNodes.dll in package\PlotterNodes\bin (pkg.json lists both). -->
+  <PropertyGroup>
+    <PackageDir Condition="'$(PackageDir)' == ''">$(MSBuildThisFileDirectory)..\..\package\PlotterNodes\</PackageDir>
+  </PropertyGroup>
+
+  <Target Name="AssembleCanvasIntoDynamoPackage" AfterTargets="Build" Condition="'$(SkipPackage)' != 'true'">
+    <ItemGroup>
+      <_CanvasBin Include="$(OutDir)PlotterNodes.Canvas.dll;$(OutDir)PlotterNodes.Canvas.xml;$(OutDir)PlotterNodes.Canvas.pdb" />
+      <_CanvasExtra Include="$(MSBuildThisFileDirectory)..\..\samples\Canvas3D\*.dyn" />
+    </ItemGroup>
+    <MakeDir Directories="$(PackageDir)bin;$(PackageDir)extra\Canvas3D" />
+    <Copy SourceFiles="@(_CanvasBin)" DestinationFolder="$(PackageDir)bin" SkipUnchangedFiles="true" Condition="Exists('%(FullPath)')" />
+    <Copy SourceFiles="@(_CanvasExtra)" DestinationFolder="$(PackageDir)extra\Canvas3D" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Canvas 3D assembled into $(PackageDir)bin" />
+  </Target>
+
+</Project>

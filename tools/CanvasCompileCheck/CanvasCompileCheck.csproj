@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Compiles the PlotterNodes.Canvas sources against Stubs/ (see README.md). Same language settings
+    as src/PlotterNodes.Canvas/PlotterNodes.Canvas.csproj, warnings as errors except the ones that
+    project also suppresses. check.sh copies this folder to /tmp and passes CanvasSourceDir, so no
+    obj/bin folders end up in the repository.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>PlotterNodes.Canvas</AssemblyName>
+    <RootNamespace>Plotter.Canvas</RootNamespace>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);CS1591;CS0618</NoWarn>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <CanvasSourceDir Condition="'$(CanvasSourceDir)' == ''">$(MSBuildThisFileDirectory)..\..\src\PlotterNodes.Canvas</CanvasSourceDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(CanvasSourceDir)\**\*.cs" Exclude="$(CanvasSourceDir)\obj\**;$(CanvasSourceDir)\bin\**" />
+    <EmbeddedResource Include="$(CanvasSourceDir)\Shaders\**\*.hlsl;$(CanvasSourceDir)\Shaders\**\*.hlsli">
+      <LogicalName>PlotterNodes.Canvas.Shaders.%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+    <ProjectReference Include="Stubs\Stubs.csproj" />
+  </ItemGroup>
+</Project>

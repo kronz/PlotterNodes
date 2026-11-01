@@ -3,11 +3,11 @@
   "file_hash": null,
   "name": "PlotterNodes",
   "version": "0.1.0",
-  "description": "Pen plotter drawing nodes: concentric offsets and halos around any Dynamo curves, hand-drawn wobble, background patterns (nested rectangles, circle clusters, framed grids, spirals), pen layers and AxiDraw-ready SVG export.",
+  "description": "Pen plotter drawing nodes: concentric offsets and halos around any Dynamo curves, hand-drawn wobble, background patterns (nested rectangles, circle clusters, framed grids, spirals), pen layers and AxiDraw-ready SVG export. Canvas 3D shows geometry in a separate window for a second monitor, with Arctic (ambient occlusion) display.",
   "group": "Drawing",
-  "keywords": [ "plotter", "axidraw", "svg", "pen", "offset", "pattern", "drawing", "generative" ],
+  "keywords": [ "plotter", "axidraw", "svg", "pen", "offset", "pattern", "drawing", "generative", "canvas", "arctic", "ambient occlusion" ],
   "dependencies": [],
-  "contents": "Plotter.Shape, Plotter.Polyline, Plotter.DistanceField, Plotter.Pattern, Plotter.Layer, Plotter.Drawing, Plotter.Page, Plotter.Noise",
+  "contents": "Plotter.Shape, Plotter.Polyline, Plotter.DistanceField, Plotter.Pattern, Plotter.Layer, Plotter.Drawing, Plotter.Page, Plotter.Noise, Plotter.View.Canvas 3D",
   "engine_version": "4.0.0.0",
   "engine": "dynamo",
   "engine_metadata": "",
@@ -15,6 +15,7 @@
   "repository_url": "",
   "contains_binaries": true,
   "node_libraries": [
-    "PlotterNodes, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null"
+    "PlotterNodes, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null",
+    "PlotterNodes.Canvas, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null"
   ]
 }
