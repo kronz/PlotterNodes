@@ -2474,6 +2474,123 @@
       "Replication": "Disabled",
       "Description": "Allows for DesignScript code to be authored directly",
       "Code": "100;"
+    },
+    {
+      "ConcreteType": "Plotter.Canvas.Canvas3D, PlotterNodes.Canvas",
+      "Settings": {
+        "IsWindowOpen": true,
+        "WindowPlacement": null,
+        "IsFullScreen": false,
+        "IsTopmost": false,
+        "DisplayMode": "Arctic",
+        "ShowGridShaded": true,
+        "ShowGridArctic": false,
+        "ShowViewCube": false,
+        "FollowBackgroundCamera": false,
+        "ShowSettingsPanel": true,
+        "Camera": {
+          "EyeX": 3.1625566482543945,
+          "EyeY": 16.695987701416016,
+          "EyeZ": -0.04268866777420044,
+          "LookX": 0.0,
+          "LookY": -20.193391799926758,
+          "LookZ": 0.0,
+          "UpX": 0.0,
+          "UpY": 0.0,
+          "UpZ": -1.0,
+          "FieldOfView": 58.5
+        },
+        "Arctic": {
+          "MaterialColor": "#EEEEEE",
+          "BackgroundColor": "#FFFFFF",
+          "UseObjectColors": true,
+          "SkyLight": 1.0,
+          "GroundBounce": 0.45,
+          "FillLight": 0.18,
+          "Exposure": 1.0,
+          "SkyShadows": true,
+          "ShadowQuality": "Medium",
+          "AmbientOcclusion": true,
+          "AmbientOcclusionStrength": 0.75,
+          "AmbientOcclusionRadius": 0.025,
+          "GroundPlane": true,
+          "GroundShadowStrength": 0.7
+        }
+      },
+      "Id": "7ff3c8e55e644fc2ae8496334683c0a0",
+      "NodeType": "ExtensionNode",
+      "Inputs": [
+        {
+          "Id": "c47def50ffef4e8692d1e72486410069",
+          "Name": "geometry",
+          "Description": "Geometry to show in the canvas window: points, curves, surfaces, solids, meshes, or lists of them.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "3ddc5bf27d274e33b93ef2ca3144e10b",
+          "Name": "geometry",
+          "Description": "The input, passed through unchanged.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Shows the geometry wired into it in a separate 3D window that you can move to another monitor or make full screen. Switch between Dynamo shading and Arctic display: white materials, soft sky shadows and ambient occlusion."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.CreateList, CoreNodeModels",
+      "VariableInputPorts": true,
+      "Id": "785b0f3bfb9d470c9e7473e0e1ed14c9",
+      "NodeType": "ExtensionNode",
+      "Inputs": [
+        {
+          "Id": "e920bab3398b4d87a90153613361c218",
+          "Name": "item0",
+          "Description": "Item Index #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "37ca8b9325714e6dbe808e3d71588aeb",
+          "Name": "item1",
+          "Description": "Item Index #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "9bfc8b4d976a448a99edbbc321a9d2f0",
+          "Name": "item2",
+          "Description": "Item Index #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "5d493c09bdf9419f93b46f4f81f6265a",
+          "Name": "list",
+          "Description": "A list (type: var[]..[])",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Makes a new list from the given inputs"
     }
   ],
   "Connectors": [
@@ -2706,6 +2823,12 @@
       "IsHidden": "False"
     },
     {
+      "Start": "3004115c18654a0a873c30abf36bf352",
+      "End": "9bfc8b4d976a448a99edbbc321a9d2f0",
+      "Id": "a8eb6ab5ab574aed9fa0345b4755917d",
+      "IsHidden": "False"
+    },
+    {
       "Start": "f2af0e9de9364c6ea595a9b43bf023b9",
       "End": "368ebcb1218f486fa961c44cc1292655",
       "Id": "43341005551c4bc3a0d4dc0621f43552",
@@ -2796,6 +2919,12 @@
       "IsHidden": "False"
     },
     {
+      "Start": "e7f5b22dff3442b38de3f86450ac96bb",
+      "End": "37ca8b9325714e6dbe808e3d71588aeb",
+      "Id": "8afe84a6bf154977891e0b1d5f1ff6c1",
+      "IsHidden": "False"
+    },
+    {
       "Start": "04eab38484a94f03ae6ccb35eda09386",
       "End": "d1a8f606351d4025bdbcbfb05bc035aa",
       "Id": "34987cb0e8284912a426add2a83158a5",
@@ -2817,12 +2946,6 @@
       "Start": "925a0b28bba74c499fabca62093a2d53",
       "End": "147420cee1354f8aa063461358ef586a",
       "Id": "46adcaa00f334bcda52bb2e5a96811a9",
-      "IsHidden": "False"
-    },
-    {
-      "Start": "f484bff2655c411a9e66a85247d5235c",
-      "End": "597f076792f8439785b7171ae9ccb46d",
-      "Id": "c54a6b41224b434c9c3ffa5f589c46f2",
       "IsHidden": "False"
     },
     {
@@ -2946,6 +3069,18 @@
       "IsHidden": "False"
     },
     {
+      "Start": "13901e191dce49e8a135d7fa570b98cf",
+      "End": "597f076792f8439785b7171ae9ccb46d",
+      "Id": "d0fe1819cbb8434ebdeb036cd6819855",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "13901e191dce49e8a135d7fa570b98cf",
+      "End": "e920bab3398b4d87a90153613361c218",
+      "Id": "1a813b37466d4aa69197143e8e93b0fd",
+      "IsHidden": "False"
+    },
+    {
       "Start": "7536a4634a354e7190a8596fe90bb334",
       "End": "9913814be58c4a88bd8f3fb238733d01",
       "Id": "b33d293ac15e44d0a127e13430992e73",
@@ -2961,6 +3096,12 @@
       "Start": "7b905a47c834439d9a76455bc4228e72",
       "End": "a45f7d140408449db6ffecac8338b3e0",
       "Id": "185b5b51738e4e7a879bcbebdad4c690",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "5d493c09bdf9419f93b46f4f81f6265a",
+      "End": "c47def50ffef4e8692d1e72486410069",
+      "Id": "d6b0ca3987164763b4d621443dc0374d",
       "IsHidden": "False"
     }
   ],
@@ -2979,7 +3120,8 @@
         "a2359abbfcde4e658f65030c8da280a1",
         "ad52f8a8737c4647a1c8f49de3958c02",
         "91515cda82fa40d39119cb25e1d7f742",
-        "cf6f41b18e37412b8476f982f7592a18"
+        "cf6f41b18e37412b8476f982f7592a18",
+        "7ff3c8e55e644fc2ae8496334683c0a0"
       ]
     }
   ],
@@ -3242,8 +3384,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": false,
-        "X": 5014.898927045085,
-        "Y": 293.6456837999007
+        "X": 5034.5925903595835,
+        "Y": 462.13591437949975
       },
       {
         "Id": "b5b588a93319451e99e769dfdf5443c9",
@@ -3352,8 +3494,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": false,
-        "X": 5091.630447106049,
-        "Y": -22.74300422305612
+        "X": 4997.538500159,
+        "Y": -71.97716250930262
       },
       {
         "Id": "34cdc6136889493ca1d7a30614266e33",
@@ -3471,9 +3613,9 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "ShowGeometry": true,
-        "X": 607.8291174729366,
-        "Y": -608.021483091836
+        "ShowGeometry": false,
+        "X": 608.770666100752,
+        "Y": -608.9630317196516
       },
       {
         "Id": "38bae88dd2694cb8bd4ea8a43d885215",
@@ -3632,8 +3774,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": false,
-        "X": 561.4465744095296,
-        "Y": -1233.619963471344
+        "X": 542.0191402890321,
+        "Y": -1152.9961118712795
       },
       {
         "Id": "30b43e9727a644139f054a07db0d9a23",
@@ -3642,8 +3784,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": false,
-        "X": 821.8394509889076,
-        "Y": -1164.6829276333606
+        "X": 808.2402471045593,
+        "Y": -1160.7974408092612
       },
       {
         "Id": "db6e05dc850c445ca25efcbcf261184f",
@@ -3651,7 +3793,7 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "ShowGeometry": false,
+        "ShowGeometry": true,
         "X": 1101.1823177751096,
         "Y": -980.2233903514419
       },
@@ -3681,7 +3823,7 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "ShowGeometry": true,
+        "ShowGeometry": false,
         "X": 4611.319077337877,
         "Y": 921.5462325703542
       },
@@ -3692,8 +3834,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": false,
-        "X": 5128.773418772305,
-        "Y": 519.3702991954713
+        "X": 4818.051175365773,
+        "Y": 901.2085490154714
       },
       {
         "Id": "d83735445db94fdf91f7e1f0ef035988",
@@ -3714,6 +3856,26 @@
         "ShowGeometry": true,
         "X": 1185.550445942058,
         "Y": 319.9168234692812
+      },
+      {
+        "Id": "7ff3c8e55e644fc2ae8496334683c0a0",
+        "Name": "Canvas 3D",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 5797.521629220122,
+        "Y": -385.5596225928366
+      },
+      {
+        "Id": "785b0f3bfb9d470c9e7473e0e1ed14c9",
+        "Name": "List Create",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": false,
+        "X": 5528.7177464853885,
+        "Y": -425.47666726608736
       }
     ],
     "Annotations": [
@@ -3795,8 +3957,8 @@
         "Background": "#FFC1D676"
       }
     ],
-    "X": 296.42523291319793,
-    "Y": -440.6008628376428,
-    "Zoom": 0.42603564710797737
+    "X": -1654.2075245050137,
+    "Y": 268.2564027909319,
+    "Zoom": 0.45699979004790614
   }
 }
