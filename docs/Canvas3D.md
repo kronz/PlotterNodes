@@ -92,6 +92,39 @@ frees their video memory; Shaded mode keeps them so that switching back is insta
 
 Frozen nodes and the geometry dimmed by Dynamo's isolation mode still cast sky shadows.
 
+## Canvas 3D Shading node
+
+`Plotter > View > Canvas 3D Shading` turns the Arctic shading of a canvas into data, for example
+to drive hatching density in a plotter drawing. Wire the **geometry output of a Canvas 3D node**
+into `canvas` (the wire identifies the canvas; the values themselves come from its window).
+
+| Port | |
+|---|---|
+| `canvas` (in) | Geometry output of a Canvas 3D node |
+| `groundPlane` (in, default true) | Include ground bounce light and output the ground |
+| `mesh` | All meshes shown in the canvas as one Dynamo Mesh (Dynamo coordinates, welded vertices) |
+| `shade` | One value per mesh triangle, in triangle order: (sky light x sky visibility + ground bounce x (1 - n.z) / 2) x exposure, clamped to 0..1. 0 = black, 1 = white |
+| `groundMesh`, `groundShade` | 80 x 80 grid under the scene (twice the scene radius each way) and its shade: 1 = open sky, lower = shadow, with the ground shadow strength applied |
+| `status` | Triangle count, directions and resolution, or why there are no values |
+
+How it works: while a shading node reads a canvas, the window copies its sky shadow maps from
+the GPU once they are complete (one staging copy per slice, once per geometry change), together
+with the light frames and the canvas triangles. A CPU port of `SkyIrradiance`, including the 2x2
+comparison filter, evaluates each triangle at its centroid and three points toward its corners,
+on worker threads. The result is stored per canvas in PlotterNodes.dll (`CanvasShadingStore`),
+and the shading node runs again by itself (Automatic run mode; in Manual mode press Run).
+Changing a light setting in the panel only re-evaluates; it does not read the GPU again.
+
+Limits:
+
+1. The canvas window must be open in Arctic display with sky shadows on; otherwise `status` says so
+   and the outputs are null.
+2. The values exclude what depends on the view: the camera fill light and screen-space AO.
+3. Right after the geometry changes, one run still returns the previous values; the node runs
+   again when the new maps are read.
+4. Do not wire `mesh` back into the same canvas: it would cast shadows on itself.
+5. Reading back takes memory once: the quality's map size in RAM (144 MB at Medium).
+
 ## How it works
 
 ### The window and its scene

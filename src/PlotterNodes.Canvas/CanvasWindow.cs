@@ -72,6 +72,11 @@ namespace Plotter.Canvas
         private bool updatingToggles;
         private string skyStatus = string.Empty;
         private string loggedQualityNote;
+        private readonly DispatcherTimer shadingTimer;
+        private SkyShadowSnapshot snapshot;
+        private bool shadingBusy;
+        private bool shadingPending;
+        private long publishedHash = long.MinValue;
 
         internal CanvasWindow(Canvas3D node, DynamoViewModel dynamoViewModel)
         {
@@ -158,6 +163,8 @@ namespace Plotter.Canvas
                     arcticGroup.AddNode(groundNode);
                     skyNode.Core.ProgressChanged += OnSkyProgress;
                     skyNode.Core.Failed += OnSkyFailed;
+                    skyNode.Core.SnapshotReady += OnSnapshotReady;
+                    skyNode.Core.SnapshotFailed += OnSnapshotFailed;
                 }
                 sceneGroup = new GroupModel3D { ItemsSource = visibleItems };
                 viewport.Items.Add(arcticGroup);
@@ -263,6 +270,13 @@ namespace Plotter.Canvas
                     cameraSaveTimer.Stop();
                     SaveCamera();
                 };
+                shadingTimer = new DispatcherTimer(DispatcherPriority.Background) { Interval = TimeSpan.FromMilliseconds(300) };
+                shadingTimer.Tick += (s, e) =>
+                {
+                    shadingTimer.Stop();
+                    RunShading();
+                };
+                CanvasShadingRegistry.Changed += OnShadingReadersChanged;
 
                 SourceInitialized += OnSourceInitialized;
                 Loaded += OnLoaded;
@@ -347,6 +361,184 @@ namespace Plotter.Canvas
             }
             viewModel.RefreshFromUpstream();
             viewport.Focus();
+            UpdateShadingReaders();
+        }
+
+        // ------------------------------------------------------------------------------------
+        // Canvas 3D Shading: shadow map readback and per-triangle values
+        // ------------------------------------------------------------------------------------
+
+        private void OnShadingReadersChanged(Guid canvasId)
+        {
+            if (canvasId != node.GUID)
+            {
+                return;
+            }
+            Dispatcher.BeginInvoke(new Action(UpdateShadingReaders));
+        }
+
+        private void UpdateShadingReaders()
+        {
+            if (disposed)
+            {
+                return;
+            }
+            var wanted = skyNode != null && CanvasShadingRegistry.HasReaders(node.GUID);
+            if (skyNode != null)
+            {
+                skyNode.Core.SnapshotsWanted = wanted;
+            }
+            if (!wanted)
+            {
+                snapshot = null;
+                return;
+            }
+            if (!PublishUnavailableStatus())
+            {
+                if (snapshot != null)
+                {
+                    ScheduleShading();
+                }
+                else
+                {
+                    skyNode.Core.RequestSnapshot();
+                    viewport.InvalidateRender();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Without Arctic sky shadows there are no maps to read: tell the shading nodes why.
+        /// Returns true when the values cannot be computed now.
+        /// </summary>
+        private bool PublishUnavailableStatus()
+        {
+            string reason = null;
+            if (!arcticAvailable)
+            {
+                reason = "Arctic display is not available in this canvas: " + arcticError;
+            }
+            else if (Mode != CanvasDisplayMode.Arctic || !node.Settings.Arctic.SkyShadows)
+            {
+                reason = "Switch the canvas window to Arctic display with sky shadows on.";
+            }
+            else if (skyNode.Core.HasFailed)
+            {
+                reason = "Sky shadows failed in this canvas: " + skyStatus;
+            }
+            if (reason == null)
+            {
+                return false;
+            }
+            if (snapshot == null)
+            {
+                Publish(new Plotter.CanvasShadingData { Status = reason }, reason.GetHashCode());
+            }
+            return true;
+        }
+
+        private void OnSnapshotReady(SkyShadowSnapshot taken)
+        {
+            if (!CheckAccess())
+            {
+                Dispatcher.BeginInvoke(new Action(() => OnSnapshotReady(taken)));
+                return;
+            }
+            if (disposed || !skyNode.Core.SnapshotsWanted)
+            {
+                return;
+            }
+            snapshot = taken;
+            ScheduleShading();
+        }
+
+        private void OnSnapshotFailed(string message)
+        {
+            if (!CheckAccess())
+            {
+                Dispatcher.BeginInvoke(new Action(() => OnSnapshotFailed(message)));
+                return;
+            }
+            logger.LogWarning("Canvas 3D: reading the sky shadow maps back failed. " + message, WarningLevel.Mild);
+            var status = "Reading the sky shadow maps back failed: " + message;
+            Publish(new Plotter.CanvasShadingData { Status = status }, status.GetHashCode());
+        }
+
+        private void ScheduleShading()
+        {
+            if (disposed || snapshot == null)
+            {
+                return;
+            }
+            shadingTimer.Stop();
+            shadingTimer.Start();
+        }
+
+        private void RunShading()
+        {
+            if (disposed || snapshot == null)
+            {
+                return;
+            }
+            if (shadingBusy)
+            {
+                shadingPending = true;
+                return;
+            }
+            var a = node.Settings.Arctic;
+            var settings = new ShadingSettings
+            {
+                SkyLight = a.SkyLight,
+                GroundBounce = a.GroundBounce,
+                Exposure = a.Exposure,
+                GroundShadowStrength = a.GroundShadowStrength,
+                GroundCells = 80,
+            };
+            var source = snapshot;
+            shadingBusy = true;
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                long hash;
+                var data = source.Evaluate(settings, out hash);
+                return Tuple.Create(data, hash);
+            }).ContinueWith(task => Dispatcher.BeginInvoke(new Action(() =>
+            {
+                shadingBusy = false;
+                if (disposed)
+                {
+                    return;
+                }
+                if (task.IsFaulted)
+                {
+                    var message = task.Exception?.GetBaseException().Message;
+                    logger.LogWarning("Canvas 3D: shading values failed. " + message, WarningLevel.Mild);
+                    Publish(new Plotter.CanvasShadingData { Status = "Shading values failed: " + message }, 0);
+                }
+                else
+                {
+                    Publish(task.Result.Item1, task.Result.Item2);
+                }
+                if (shadingPending)
+                {
+                    shadingPending = false;
+                    ScheduleShading();
+                }
+            })));
+        }
+
+        /// <summary>Stores the values and re-runs the shading nodes, unless nothing changed.</summary>
+        private void Publish(Plotter.CanvasShadingData data, long hash)
+        {
+            if (hash == publishedHash && hash != 0)
+            {
+                return;
+            }
+            publishedHash = hash;
+            Plotter.CanvasShadingStore.Publish(node.GUID.ToString(), data);
+            foreach (var reader in CanvasShadingRegistry.Readers(node.GUID))
+            {
+                reader.Refresh();
+            }
         }
 
         private void SavePlacement()
@@ -451,6 +643,7 @@ namespace Plotter.Canvas
             if (changed)
             {
                 CanvasWindowManager.MarkModified(node);
+                UpdateShadingReaders();
             }
         }
 
@@ -458,6 +651,9 @@ namespace Plotter.Canvas
         {
             ApplyDisplaySettings();
             CanvasWindowManager.MarkModified(node);
+            // Light settings change the published shade values; sky shadows on/off may make
+            // them (un)available.
+            UpdateShadingReaders();
         }
 
         private void OnPanelViewOptionsChanged()
@@ -1044,6 +1240,9 @@ namespace Plotter.Canvas
         {
             disposed = true;
             cameraSaveTimer.Stop();
+            shadingTimer.Stop();
+            snapshot = null;
+            CanvasShadingRegistry.Changed -= OnShadingReadersChanged;
             node.PropertyChanged -= OnNodePropertyChanged;
             if (backgroundPreview != null)
             {
@@ -1066,6 +1265,9 @@ namespace Plotter.Canvas
             {
                 skyNode.Core.ProgressChanged -= OnSkyProgress;
                 skyNode.Core.Failed -= OnSkyFailed;
+                skyNode.Core.SnapshotReady -= OnSnapshotReady;
+                skyNode.Core.SnapshotFailed -= OnSnapshotFailed;
+                skyNode.Core.SnapshotsWanted = false;
             }
 
             try

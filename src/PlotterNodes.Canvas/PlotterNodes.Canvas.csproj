@@ -75,6 +75,12 @@
     <Reference Include="SharpDX.Mathematics"><HintPath>$(DynamoBinDir)\SharpDX.Mathematics.dll</HintPath><Private>false</Private></Reference>
   </ItemGroup>
 
+  <!-- PlotterNodes.dll: CanvasShadingStore / CanvasShading.Results (Canvas 3D Shading node).
+       Private=false: it is already in the package bin folder. -->
+  <ItemGroup>
+    <ProjectReference Include="..\PlotterNodes\PlotterNodes.csproj" Private="false" />
+  </ItemGroup>
+
   <!-- HLSL sources, compiled at run time (Rendering/ShaderLibrary.cs). Logical names: PlotterNodes.Canvas.Shaders.<file>. -->
   <ItemGroup>
     <EmbeddedResource Include="Shaders\**\*.hlsl;Shaders\**\*.hlsli">

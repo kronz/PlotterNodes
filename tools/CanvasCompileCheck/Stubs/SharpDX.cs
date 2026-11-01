@@ -22,6 +22,8 @@ namespace SharpDX
         public float Length() { throw null; }
         public float LengthSquared() { throw null; }
         public static Vector3 Normalize(Vector3 value) { throw null; }
+        public static Vector3 TransformCoordinate(Vector3 coordinate, Matrix transform) { throw null; }
+        public static Vector3 TransformNormal(Vector3 normal, Matrix transform) { throw null; }
         public static Vector3 Cross(Vector3 left, Vector3 right) { throw null; }
         public static float Dot(Vector3 left, Vector3 right) { throw null; }
         public static Vector3 operator +(Vector3 left, Vector3 right) { throw null; }
@@ -96,6 +98,15 @@ namespace SharpDX
     {
         public void Dispose() { }
     }
+
+    public struct DataBox
+    {
+        public IntPtr DataPointer;
+        public int RowPitch;
+        public int SlicePitch;
+    }
+
+    public class DataStream : DisposeBase { }
 }
 
 namespace SharpDX.Mathematics.Interop
@@ -121,6 +132,7 @@ namespace SharpDX.DXGI
     // namespaces must qualify them.
     public class DeviceChild : ComObject { }
     public class Resource : DeviceChild { }
+    [Flags] public enum MapFlags { Read = 1, Write = 2, Discard = 4 }
     public class Device : ComObject
     {
         public Adapter Adapter { get { throw null; } }
@@ -159,6 +171,9 @@ namespace SharpDX.Direct3D11
     public enum TextureAddressMode { Wrap = 1, Mirror = 2, Clamp = 3, Border = 4, MirrorOnce = 5 }
     public enum Comparison { Never = 1, Less = 2, Equal = 3, LessEqual = 4, Greater = 5, NotEqual = 6, GreaterEqual = 7, Always = 8 }
     public enum RenderTargetViewDimension { Unknown = 0, Texture2D = 4, Texture2DArray = 5 }
+    public enum MapMode { Read = 1, Write = 2, ReadWrite = 3, WriteDiscard = 4, WriteNoOverwrite = 5 }
+    [Flags] public enum MapFlags { None = 0, DoNotWait = 1048576 }
+    public struct ResourceRegion { public int Left, Top, Front, Right, Bottom, Back; }
     public enum InputClassification { PerVertexData = 0, PerInstanceData = 1 }
     [Flags] public enum FormatSupport { None = 0, Texture2D = 32, RenderTarget = 16384, ShaderSampleComparison = 512 }
 

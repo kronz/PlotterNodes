@@ -33,12 +33,21 @@ namespace ProtoCore.AST.AssociativeAST
         public string Value { get; set; }
     }
     public class NullNode : AssociativeNode { }
+    public class IntNode : AssociativeNode { }
+    public class StringNode : AssociativeNode { }
+    public class BooleanNode : AssociativeNode { }
     public class BinaryExpressionNode : AssociativeNode { }
 
     public static class AstFactory
     {
         public static NullNode BuildNullNode() { throw null; }
         public static BinaryExpressionNode BuildAssignment(AssociativeNode lhs, AssociativeNode rhs) { throw null; }
+        public static IntNode BuildIntNode(int value) { throw null; }
+        public static IdentifierNode BuildIdentifier(string name) { throw null; }
+        public static StringNode BuildStringNode(string str) { throw null; }
+        public static BooleanNode BuildBooleanNode(bool value) { throw null; }
+        public static AssociativeNode BuildIndexExpression(AssociativeNode value, AssociativeNode index) { throw null; }
+        public static AssociativeNode BuildFunctionCall<T1, T2, T3, T4, TRetType>(Func<T1, T2, T3, T4, TRetType> a, List<AssociativeNode> arguments, object core = null) { throw null; }
     }
 }
 
@@ -120,6 +129,8 @@ namespace Dynamo.Graph.Nodes
         public PortType PortType { get { throw null; } }
         public NodeModel Owner { get { throw null; } }
         public int Index { get { throw null; } }
+        public AssociativeNode DefaultValue { get; set; }
+        public bool UsingDefaultValue { get; set; }
         protected override void SerializeCore(XmlElement element, Dynamo.Graph.SaveContext context) { }
         protected override void DeserializeCore(XmlElement nodeElement, Dynamo.Graph.SaveContext context) { }
     }
@@ -136,6 +147,10 @@ namespace Dynamo.Graph.Nodes
         public void RegisterAllPorts() { }
         public virtual IEnumerable<AssociativeNode> BuildOutputAst(List<AssociativeNode> inputAstNodes) { throw null; }
         public virtual IdentifierNode GetAstIdentifierForOutputIndex(int outputIndex) { throw null; }
+        public IdentifierNode AstIdentifierForPreview { get { throw null; } }
+        public string AstIdentifierBase { get { throw null; } }
+        public virtual void OnNodeModified(bool forceExecute = false) { }
+        public void MarkNodeAsModified(bool forceExecute = false) { }
         public virtual bool RequestVisualUpdateAsync(IScheduler scheduler, EngineController engine, IRenderPackageFactory factory, bool forceUpdate = false) { throw null; }
         public virtual bool RequestVisualUpdateAsync(IScheduler scheduler, EngineController engine, IRenderPackageFactory factory, bool forceUpdate, bool ignoreIsVisible = false) { throw null; }
         public void Warning(string p, bool isPersistent = false) { }

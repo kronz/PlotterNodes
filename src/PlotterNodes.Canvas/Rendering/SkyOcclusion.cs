@@ -176,6 +176,177 @@ namespace Plotter.Canvas.Rendering
             }
         }
 
+        /// <summary>
+        /// While true, a CPU copy of the maps (<see cref="SkyShadowSnapshot"/>) is taken each time
+        /// they are complete for new geometry, for the Canvas 3D Shading node.
+        /// </summary>
+        internal bool SnapshotsWanted { get; set; }
+
+        /// <summary>Raised on the render thread with a new snapshot.</summary>
+        internal event Action<SkyShadowSnapshot> SnapshotReady;
+
+        /// <summary>Raised when reading the maps back failed (sky shadows keep working).</summary>
+        internal event Action<string> SnapshotFailed;
+
+        /// <summary>Takes a snapshot as soon as the maps are complete, even for unchanged geometry.</summary>
+        internal void RequestSnapshot()
+        {
+            forceSnapshot = true;
+            RaiseInvalidateRender();
+        }
+
+        private bool forceSnapshot;
+        private long snapshotSignature = long.MinValue;
+
+        private void TakeSnapshot(DeviceContextProxy deviceContext, long signature)
+        {
+            SkyShadowSnapshot snapshot;
+            try
+            {
+                snapshot = CaptureSnapshot(deviceContext, signature);
+            }
+            catch (Exception ex)
+            {
+                SnapshotFailed?.Invoke(ex.Message);
+                return;
+            }
+            SnapshotReady?.Invoke(snapshot);
+        }
+
+        /// <summary>
+        /// Copies every slice into a one-slice staging texture and reads it (a GPU stall per slice,
+        /// once per geometry change), and collects the caster triangles in world coordinates.
+        /// </summary>
+        private SkyShadowSnapshot CaptureSnapshot(DeviceContextProxy deviceContext, long signature)
+        {
+            var res = allocatedResolution;
+            var count = directions.Length;
+            var maps = new ushort[count][];
+            using (var staging = new Texture2D(Device, new Texture2DDescription
+            {
+                Width = res,
+                Height = res,
+                MipLevels = 1,
+                ArraySize = 1,
+                Format = skyFormat,
+                SampleDescription = new SampleDescription(1, 0),
+                Usage = ResourceUsage.Staging,
+                BindFlags = BindFlags.None,
+                CpuAccessFlags = CpuAccessFlags.Read,
+                OptionFlags = ResourceOptionFlags.None,
+            }))
+            {
+                var row16 = new short[res];
+                var row32 = new float[res];
+                for (var k = 0; k < count; k++)
+                {
+                    // Subresource of array slice k, mip 0 (one mip level).
+                    deviceContext.CopySubresourceRegion(skyTexture, k, null, staging, 0);
+                    DataStream stream;
+                    var box = deviceContext.MapSubresource(staging, 0, 0, SharpDX.Direct3D11.MapMode.Read, SharpDX.Direct3D11.MapFlags.None, out stream);
+                    try
+                    {
+                        var map = new ushort[res * res];
+                        for (var y = 0; y < res; y++)
+                        {
+                            var rowPointer = IntPtr.Add(box.DataPointer, y * box.RowPitch);
+                            if (skyFormat == Format.R16_UNorm)
+                            {
+                                System.Runtime.InteropServices.Marshal.Copy(rowPointer, row16, 0, res);
+                                for (var x = 0; x < res; x++) map[y * res + x] = unchecked((ushort)row16[x]);
+                            }
+                            else
+                            {
+                                System.Runtime.InteropServices.Marshal.Copy(rowPointer, row32, 0, res);
+                                for (var x = 0; x < res; x++)
+                                {
+                                    var f = Math.Max(0f, Math.Min(1f, row32[x]));
+                                    map[y * res + x] = (ushort)Math.Round(f * 65535f);
+                                }
+                            }
+                        }
+                        maps[k] = map;
+                    }
+                    finally
+                    {
+                        stream?.Dispose();
+                        deviceContext.UnmapSubresource(staging, 0);
+                    }
+                }
+            }
+
+            var snapshot = new SkyShadowSnapshot
+            {
+                Count = count,
+                Resolution = res,
+                Maps = maps,
+                U = new Vector4[count],
+                V = new Vector4[count],
+                W = new Vector4[count],
+                DepthBias = new float[count],
+                NormalOffset = new float[count],
+                Direction = new Vector3[count],
+                Weight = new float[count],
+                GroundHeight = parameters.GroundHeight,
+                SceneCenter = parameters.SceneCenter,
+                SceneRadius = parameters.SceneRadius,
+                Signature = signature,
+            };
+            var normalization = 0f;
+            for (var k = 0; k < count; k++)
+            {
+                snapshot.U[k] = frames[k].U;
+                snapshot.V[k] = frames[k].V;
+                snapshot.W[k] = frames[k].W;
+                snapshot.DepthBias[k] = frames[k].DepthBias;
+                snapshot.NormalOffset[k] = frames[k].NormalOffset;
+                snapshot.Direction[k] = directions[k].Direction;
+                snapshot.Weight[k] = directions[k].Weight;
+                normalization += directions[k].Weight * Math.Max(0f, directions[k].Direction.Y);
+            }
+            snapshot.InverseNormalization = normalization > 0 ? 1f / normalization : 0f;
+
+            var positions = new List<float>();
+            var normals = new List<float>();
+            var indices = new List<int>();
+            foreach (var caster in casters)
+            {
+                var geometryNode = caster.Node as GeometryNode;
+                var mesh = geometryNode?.Geometry as MeshGeometry3D;
+                if (mesh == null || mesh.Positions == null || mesh.Indices == null)
+                {
+                    continue;
+                }
+                var world = caster.Node.TotalModelMatrix;
+                var instances = geometryNode.HasInstances && geometryNode.Instances != null
+                    ? (IList<Matrix>)geometryNode.Instances
+                    : new[] { Matrix.Identity };
+                var hasNormals = mesh.Normals != null && mesh.Normals.Count == mesh.Positions.Count;
+                foreach (var instance in instances)
+                {
+                    var m = instance * world;
+                    var baseIndex = positions.Count / 3;
+                    for (var i = 0; i < mesh.Positions.Count; i++)
+                    {
+                        var p = Vector3.TransformCoordinate(mesh.Positions[i], m);
+                        positions.Add(p.X); positions.Add(p.Y); positions.Add(p.Z);
+                        var n = hasNormals ? Vector3.TransformNormal(mesh.Normals[i], m) : Vector3.Zero;
+                        normals.Add(n.X); normals.Add(n.Y); normals.Add(n.Z);
+                    }
+                    for (var i = 0; i + 2 < mesh.Indices.Count; i += 3)
+                    {
+                        indices.Add(baseIndex + mesh.Indices[i]);
+                        indices.Add(baseIndex + mesh.Indices[i + 1]);
+                        indices.Add(baseIndex + mesh.Indices[i + 2]);
+                    }
+                }
+            }
+            snapshot.Positions = positions.ToArray();
+            snapshot.Normals = normals.ToArray();
+            snapshot.Indices = indices.ToArray();
+            return snapshot;
+        }
+
         /// <summary>Forces the sky shadow maps to be rebuilt (geometry changed).</summary>
         internal void InvalidateShadows()
         {
@@ -285,6 +456,21 @@ namespace Plotter.Canvas.Rendering
                         {
                             mapsValid = true;
                             inUse = renderedCount;
+                        }
+
+                        if (SnapshotsWanted && renderedCount == directions.Length)
+                        {
+                            long signature2;
+                            unchecked
+                            {
+                                signature2 = casterSignature * 31 + allocatedCount * 7919 + allocatedResolution;
+                            }
+                            if (forceSnapshot || signature2 != snapshotSignature)
+                            {
+                                forceSnapshot = false;
+                                snapshotSignature = signature2;
+                                TakeSnapshot(deviceContext, signature2);
+                            }
                         }
                     }
                     else

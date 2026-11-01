@@ -7,7 +7,7 @@
   "group": "Drawing",
   "keywords": [ "plotter", "axidraw", "svg", "pen", "offset", "pattern", "drawing", "generative", "canvas", "arctic", "ambient occlusion" ],
   "dependencies": [],
-  "contents": "Plotter.Shape, Plotter.Polyline, Plotter.DistanceField, Plotter.Pattern, Plotter.Layer, Plotter.Drawing, Plotter.Page, Plotter.Noise, Plotter.View.Canvas 3D",
+  "contents": "Plotter.Shape, Plotter.Polyline, Plotter.DistanceField, Plotter.Pattern, Plotter.Layer, Plotter.Drawing, Plotter.Page, Plotter.Noise, Plotter.View.Canvas 3D, Plotter.View.Canvas 3D Shading",
   "engine_version": "4.0.0.0",
   "engine": "dynamo",
   "engine_metadata": "",

@@ -158,6 +158,9 @@ namespace HelixToolkit.SharpDX.Core.Render
         public void SetRenderTarget(DepthStencilView dsv, RenderTargetView renderTarget) { }
         public void SetViewport(float x, float y, float width, float height, float minZ = 0, float maxZ = 1) { }
         public void SetScissorRectangle(int left, int top, int right, int bottom) { }
+        public void CopySubresourceRegion(Resource source, int sourceSubresource, ResourceRegion? sourceRegion, Resource destination, int destinationSubResource, int dstX = 0, int dstY = 0, int dstZ = 0) { }
+        public DataBox MapSubresource(Texture2D resource, int mipSlice, int arraySlice, MapMode mode, MapFlags flags, out DataStream stream) { throw null; }
+        public void UnmapSubresource(Resource resourceRef, int subresource) { }
     }
 }
 
@@ -325,6 +328,7 @@ namespace HelixToolkit.SharpDX.Core.Model.Scene
         public bool Visible { get; set; }
         public bool IsHitTestVisible { get; set; }
         public Matrix ModelMatrix { get; set; }
+        public Matrix TotalModelMatrix { get { throw null; } }
         public bool HasBound { protected set; get; }
         public IRenderTechnique EffectTechnique { get { throw null; } }
         public RenderCore RenderCore { get { throw null; } }
@@ -340,6 +344,8 @@ namespace HelixToolkit.SharpDX.Core.Model.Scene
     public abstract class GeometryNode : SceneNode
     {
         public Geometry3D Geometry { get; set; }
+        public IList<Matrix> Instances { get; set; }
+        public bool HasInstances { get { throw null; } }
         public bool IsThrowingShadow { get; set; }
         public sealed override BoundingBox BoundsWithTransform { get { throw null; } }
         protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits) { throw null; }
