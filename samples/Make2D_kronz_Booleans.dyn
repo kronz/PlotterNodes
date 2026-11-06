@@ -3027,6 +3027,151 @@
       "Replication": "Disabled",
       "Description": "Allows for DesignScript code to be authored directly",
       "Code": "0..1;"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "3020f3aa-2ad9-43f4-b244-8c892b082c3e",
+      "FunctionType": "Graph",
+      "Id": "a65e4ab7992544698bec8ebdd1559a50",
+      "NodeType": "FunctionNode",
+      "Inputs": [
+        {
+          "Id": "9cdaf759c4af4af18b260bf86bb44a86",
+          "Name": "distance",
+          "Description": "double\nDefault value : 1",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ac28abd8a5904ce3afd3aef13b6934f9",
+          "Name": "cellValues",
+          "Description": "double[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4c3e39e644904168b49a3ce23c164b7e",
+          "Name": "MinSteps",
+          "Description": "int\nDefault value : 1",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2eea479df56744b196de1499f206d01a",
+          "Name": "MaxSteps",
+          "Description": "int\nDefault value : 30",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5697e0e3ead642ea98b46b0ec49290f6",
+          "Name": "surfaces",
+          "Description": "var[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "44d6f9f36880427cb999222bf29ed4db",
+          "Name": "seed",
+          "Description": "int\nDefault value : 3",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "50aec04bc70e4d808e2d752929e14df6",
+          "Name": "longestLine",
+          "Description": "double\nDefault value : 10",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "d9b3b8ccc97b41d483b8366a3914f9fb",
+          "Name": "lines",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "A renovation of the older hatches"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "Id": "e9881d54f6774ac89575943c4bf5d0b0",
+      "NodeType": "FunctionNode",
+      "Inputs": [
+        {
+          "Id": "7fef1f0572cb41bf898ee185dcca7a07",
+          "Name": "mesh",
+          "Description": "Autodesk.DesignScript.Geometry.Mesh",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "66ab99ea5ec94eb09d2cea3872d61698",
+          "Name": "Surface[]",
+          "Description": "Surface[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "FunctionSignature": "Autodesk.DesignScript.Geometry.Mesh.Triangles",
+      "Replication": "Auto",
+      "Description": "Converts the Mesh faces to Surface patches, and returns them. Note: this method can generate A LOT of heavy Surfaces, and may slow down Dynamo with large meshes.\n\nMesh.Triangles ( ): Surface[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "Id": "39a959a84db64136a95ef9e8b8eddb9e",
+      "NodeType": "CodeBlockNode",
+      "Inputs": [
+        {
+          "Id": "9de58766cf534743a9378db666ef9b0f",
+          "Name": "n",
+          "Description": "n",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f0f5e756c9594e6c9f845e67b006f339",
+          "Name": "function",
+          "Description": "1 - n",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly",
+      "Code": "1-n;"
     }
   ],
   "Connectors": [
@@ -3553,6 +3698,12 @@
       "IsHidden": "False"
     },
     {
+      "Start": "90ad8bcf6d16479a8c56ff1949d3a5fb",
+      "End": "9de58766cf534743a9378db666ef9b0f",
+      "Id": "12ace1f66cf1455b843d3a4f67c0d7b0",
+      "IsHidden": "False"
+    },
+    {
       "Start": "9d9f0e0b6fd84390b03a1afaa38f5bd3",
       "End": "22a439e0c28e47c8a0ca43befc14192e",
       "Id": "14d7c02fbb48466e8ca9b7b5bc654c8d",
@@ -3589,6 +3740,12 @@
       "IsHidden": "False"
     },
     {
+      "Start": "b95101a1705943749db7330310e09cdf",
+      "End": "7fef1f0572cb41bf898ee185dcca7a07",
+      "Id": "43a70d36143245f3baa731893733ab8e",
+      "IsHidden": "False"
+    },
+    {
       "Start": "6793ce2653334554ab2cf2330bbe11e4",
       "End": "487d3a2e9d7e4e7098baaa6fca202757",
       "Id": "c150688991624147a583c99851888e0b",
@@ -3611,9 +3768,23 @@
       "End": "d26e6529e23a4840aa7b842630fd12f5",
       "Id": "15abbbed7a6b49bb9927fdfea198aea0",
       "IsHidden": "False"
+    },
+    {
+      "Start": "66ab99ea5ec94eb09d2cea3872d61698",
+      "End": "5697e0e3ead642ea98b46b0ec49290f6",
+      "Id": "96fa84baa6784e06bc1b05e238faaa5f",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "f0f5e756c9594e6c9f845e67b006f339",
+      "End": "ac28abd8a5904ce3afd3aef13b6934f9",
+      "Id": "398e8c461565475aa71c1e7e9275a8cf",
+      "IsHidden": "False"
     }
   ],
-  "Dependencies": [],
+  "Dependencies": [
+    "3020f3aa-2ad9-43f4-b244-8c892b082c3e"
+  ],
   "NodeLibraryDependencies": [
     {
       "Name": "PlotterNodes",
@@ -3631,6 +3802,14 @@
         "cf6f41b18e37412b8476f982f7592a18",
         "7ff3c8e55e644fc2ae8496334683c0a0",
         "3f07c3e0f3914c5f9d95561f668a6fe6"
+      ]
+    },
+    {
+      "Name": "Buildz_Plotter",
+      "Version": "0.2.0",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "a65e4ab7992544698bec8ebdd1559a50"
       ]
     }
   ],
@@ -4403,8 +4582,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 7035.131701165503,
-        "Y": -408.47269187534425
+        "X": 6639.9604410541015,
+        "Y": -441.9617817152935
       },
       {
         "Id": "82f2f01e30aa462583af4ac08ead496d",
@@ -4413,8 +4592,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 6654.960891521742,
-        "Y": -199.77601635923645
+        "X": 6529.934956119265,
+        "Y": -129.44892769534295
       },
       {
         "Id": "3aacd0a9793e4a5b9ece88064a9d116c",
@@ -4423,8 +4602,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": false,
-        "X": 6718.041708813672,
-        "Y": -532.5320797848307
+        "X": 6434.500748168768,
+        "Y": -713.3731649205566
       },
       {
         "Id": "1d4ad37c13634c1d93a389320bcda215",
@@ -4503,8 +4682,38 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 6473.605135641966,
-        "Y": -143.21181443982255
+        "X": 6348.579200239488,
+        "Y": -72.88472577592904
+      },
+      {
+        "Id": "a65e4ab7992544698bec8ebdd1559a50",
+        "Name": "Hatch2026",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 7382.521066387999,
+        "Y": -246.33989952759748
+      },
+      {
+        "Id": "e9881d54f6774ac89575943c4bf5d0b0",
+        "Name": "Mesh.Triangles",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": false,
+        "X": 6786.415267236901,
+        "Y": -551.0906170711357
+      },
+      {
+        "Id": "39a959a84db64136a95ef9e8b8eddb9e",
+        "Name": "Code Block",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 7119.677026418482,
+        "Y": -233.23569230111195
       }
     ],
     "Annotations": [
@@ -4533,14 +4742,14 @@
         ],
         "HasNestedGroups": false,
         "Left": -1681.5102028587385,
-        "Top": -265.17730610089814,
-        "Width": 2111.805775328008,
-        "Height": 508.395037846734,
+        "Top": -265.51063943423145,
+        "Width": 2112.1391086613417,
+        "Height": 509.0617045134006,
         "FontSize": 36.0,
         "GroupStyleId": "00000000-0000-0000-0000-000000000000",
         "InitialTop": -192.17730610089814,
         "InitialHeight": 436.395037846734,
-        "TextblockHeight": 63.0,
+        "TextblockHeight": 63.333333333333336,
         "IsOptionalInPortsCollapsed": false,
         "IsUnconnectedOutPortsCollapsed": false,
         "HasToggledOptionalInPorts": false,
@@ -4571,14 +4780,14 @@
         ],
         "HasNestedGroups": false,
         "Left": -1515.7637626855424,
-        "Top": -1417.0837282198072,
-        "Width": 1872.0911180245228,
-        "Height": 742.7109013191724,
+        "Top": -1417.4170615531405,
+        "Width": 1872.924451357856,
+        "Height": 743.377567985839,
         "FontSize": 36.0,
         "GroupStyleId": "00000000-0000-0000-0000-000000000000",
         "InitialTop": -1344.0837282198072,
         "InitialHeight": 682.7109013191724,
-        "TextblockHeight": 63.0,
+        "TextblockHeight": 63.333333333333336,
         "IsOptionalInPortsCollapsed": false,
         "IsUnconnectedOutPortsCollapsed": false,
         "HasToggledOptionalInPorts": false,
@@ -4586,8 +4795,8 @@
         "Background": "#FFC1D676"
       }
     ],
-    "X": -3044.4382796961227,
-    "Y": 381.92270465751284,
+    "X": -3429.104946362789,
+    "Y": 383.92270465751284,
     "Zoom": 0.5972094223994682
   }
 }
